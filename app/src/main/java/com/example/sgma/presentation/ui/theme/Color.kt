@@ -1,4 +1,4 @@
-package com.example.sgma.ui.theme
+package com.example.sgma.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
