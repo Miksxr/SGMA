@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlinx.serealization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtoolsKsp)
 }
 
 android {
@@ -66,4 +69,25 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.okHttp)
+
+    // serialization
+    implementation(libs.kotlinx.serealization)
+
+    // room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    // courutines
+    implementation(libs.kotlinx.coroutines.core)
 }
