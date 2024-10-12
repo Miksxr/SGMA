@@ -1,13 +1,15 @@
 package com.example.sgma.data.datasource.local
 
 import android.content.Context
-import android.provider.ContactsContract.Data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+// локальная база данных для сохранения элементов помеченных пользователем
 @Database(entities = [], version = 0)
 abstract class MediaDatabase : RoomDatabase() {
+
+    abstract fun getMediaItemDao() : MediaItemDao
 
     companion object {
         private var INSTANCE : MediaDatabase? = null

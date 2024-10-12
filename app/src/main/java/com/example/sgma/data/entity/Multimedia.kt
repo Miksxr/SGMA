@@ -1,8 +1,8 @@
 package com.example.sgma.data.entity
 
-import androidx.room.Entity
 import kotlinx.serialization.Serializable
 
+// сущность которая отображается в полной версии страницы фильма/сериала/аниме
 @Serializable
 data class Multimedia(
     val id: Int,
