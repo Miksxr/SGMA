@@ -4,13 +4,14 @@ import kotlinx.serialization.Serializable
 
 // на основе RAW
 // сущность которая отображается в полной версии страницы игры
-@Serializable
+//@Serializable
 data class Game(
     val id: Int,
     val name: String,
-    val image: String,
+    val image: Int, // Изменил для фейков
     val year: Int,
     val sgmaRating: Double,
     val metacritic: Double,
-    val description: String
+    val description: String,
+    val statusType: StatusType = StatusType.NONE // Я добавил
 )

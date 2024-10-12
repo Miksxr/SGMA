@@ -7,7 +7,7 @@ import androidx.room.Entity
 data class Media(
     val id: Int,
     val name: String,
-    val image: String,
+    val image: Int, // Изменил для фейков
     val year: Int,
     val sgmaRating: Double,
     val anotherRating: Double,
