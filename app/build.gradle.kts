@@ -1,3 +1,5 @@
+import com.android.tools.r8.internal.kt
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -70,7 +72,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //hilt
+    // compose navigation
+    implementation(libs.androidx.navigation.compose)
+
+    // hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
@@ -90,4 +95,8 @@ dependencies {
 
     // courutines
     implementation(libs.kotlinx.coroutines.core)
+
+    // coil
+    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

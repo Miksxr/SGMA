@@ -17,5 +17,6 @@ enum class StatusType {
     HaventWatched,
 
     // General
-    InPlans
+    InPlans,
+    NONE
 }
