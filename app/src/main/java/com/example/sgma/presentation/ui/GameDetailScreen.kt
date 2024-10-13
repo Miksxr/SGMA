@@ -1,5 +1,6 @@
 package com.example.sgma.presentation.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,19 +16,36 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.Game
+import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import javax.inject.Inject
 
 @Composable
-fun GameDetailScreen(game: Game, navController: NavController) {
+fun GameDetailScreen(
+    game: Game,
+    navController: NavController,
+    viewModel : LocalMediaViewModel,
+    context: Context
+) {
     Column(modifier = Modifier.padding(16.dp)) {
+        val inCollectionState = remember {
+            mutableStateOf(false)
+        }
+        viewModel.inDB.observe(context as LifecycleOwner, {
+            inCollectionState.value = it
+        })
 
         Button(
             onClick = { navController.popBackStack() }, // Возврат назад по навигации
@@ -63,10 +81,13 @@ fun GameDetailScreen(game: Game, navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = "${game.statusType}",
-            fontSize = 20.sp
-        )
+
+        if (inCollectionState.value) {
+            Text(
+                text = "${game.statusType}",
+                fontSize = 20.sp
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,10 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Media
+import com.example.sgma.domain.Media
 
 @Composable
-fun MediaCard(media: Media, onClick: () -> Unit) {
+fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -46,8 +45,8 @@ fun MediaCard(media: Media, onClick: () -> Unit) {
                     .height(130.dp)
             ) {
                 Image(
-                    painter = painterResource(id = media.image),
-                    contentDescription = media.name,
+                    painter = painterResource(id = mediaDBModel.image),
+                    contentDescription = mediaDBModel.name,
                     modifier = Modifier.fillMaxSize()
                 )
                 Box(
@@ -57,7 +56,7 @@ fun MediaCard(media: Media, onClick: () -> Unit) {
                         .padding(horizontal = 6.dp, vertical = 2.dp)
                 ) {
                     Text(
-                        text = "${media.statusType}",
+                        text = "${mediaDBModel.statusType}",
                         color = Color.White,
                         fontSize = 8.sp
                     )
@@ -68,19 +67,19 @@ fun MediaCard(media: Media, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = media.name,
+                    text = mediaDBModel.name,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "${media.type} • ${media.year}",
+                    text = "${mediaDBModel.type} • ${mediaDBModel.year}",
                     fontSize = 18.sp,
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "${media.sgmaRating}",
+                        text = "${mediaDBModel.sgmaRating}",
                         fontSize = 18.sp
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -92,12 +91,12 @@ fun MediaCard(media: Media, onClick: () -> Unit) {
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = "${media.anotherRating}",
+                        text = "${mediaDBModel.anotherRating}",
                         fontSize = 18.sp
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     // Условие для отображения иконки метакритика или кинопоиска
-                    val ratingIcon = if (media.type == ContentTypes.GAME) {
+                    val ratingIcon = if (mediaDBModel.type == ContentTypes.Game) {
                         R.drawable.metacritic // Замените на иконку метакритика
                     } else {
                         R.drawable.kinopoisk // Иконка для других типов

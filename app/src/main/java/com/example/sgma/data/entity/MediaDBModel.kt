@@ -1,16 +1,17 @@
 package com.example.sgma.data.entity
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-// сущность которая отображает элемент списка
+// модель для хранения в бд
 @Entity("media")
-data class Media(
-    val id: Int,
+data class MediaDBModel(
+    @PrimaryKey val id: Int,
     val name: String,
     val image: Int, // Изменил для фейков
     val year: Int,
     val sgmaRating: Double,
     val anotherRating: Double,
-    val type: ContentTypes,
-    val statusType: StatusType = StatusType.NONE
+    val type: String,
+    val statusType: String = StatusType.NONE.name
 )
