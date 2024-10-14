@@ -15,57 +15,6 @@ import com.example.sgma.presentation.ui.MultimediaDetailScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 
 @Composable
-fun SetupNavGraph(
-    navController: NavHostController,
-    viewModel: LocalMediaViewModel,
-    context: Context
-) {
-    val mediaList = getFakeMediaList()
-
-    NavHost(
-        navController = navController,
-        startDestination = "media_list"
-    ) {
-        composable("media_list") {
-            MainScreen(navController = navController)
-        }
-        composable("game_detail/{gameId}") { backStackEntry ->
-            val gameId = backStackEntry.arguments?.getString("gameId")?.toIntOrNull()
-            val game = mediaList.find { it.id == gameId && it.type == ContentTypes.Game }
-            game?.let {
-                GameDetailScreen(game = Game(
-                    id = it.id,
-                    name = it.name,
-                    image = it.image,
-                    year = it.year,
-                    sgmaRating = it.sgmaRating,
-                    metacritic = it.anotherRating,
-                    statusType = it.statusType,
-                    description = "Описание для игры ${it.name}"
-                ), navController, viewModel, context)
-            }
-        }
-        composable("multimedia_detail/{mediaId}") { backStackEntry ->
-            val mediaId = backStackEntry.arguments?.getString("mediaId")?.toIntOrNull()
-            val multimedia = mediaList.find { it.id == mediaId && it.type != ContentTypes.Game }
-            multimedia?.let {
-                MultimediaDetailScreen(multimedia = Multimedia(
-                    id = it.id,
-                    nameRu = it.name,
-                    image = it.image,
-                    year = it.year,
-                    sgmaRating = it.sgmaRating,
-                    kinopoiskReting = it.anotherRating,
-                    statusType = it.statusType,
-                    description = "Описание для мультимедия ${it.name}"
-                ), navController
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun CombinedGraph(
     navController: NavHostController,
     viewModel: LocalMediaViewModel,
@@ -125,7 +74,9 @@ fun CombinedGraph(
                         statusType = it.statusType,
                         description = "Описание для мультимедия ${it.name}"
                     ),
-                    navController = navController // Убедитесь, что здесь правильный параметр
+                    navController = navController, // Убедитесь, что здесь правильный параметр
+                    viewModel,
+                    context
                 )
             }
         }
