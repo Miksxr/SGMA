@@ -7,7 +7,7 @@ import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.Media
 
 class MediaDBModelMapper {
-    fun map(mediaDBModel: MediaDBModel?) : Media? {
+    fun map(mediaDBModel: MediaDBModel?) : Media {
         return Media (
             id = mediaDBModel?.id ?: -1,
             name = mediaDBModel?.name ?: "",
