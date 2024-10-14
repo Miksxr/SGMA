@@ -18,5 +18,5 @@ enum class StatusType {
 
     // General
     InPlans,
-    NONE
+    None
 }

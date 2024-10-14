@@ -9,11 +9,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -64,9 +62,9 @@ fun MainScreen(navController: NavController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(mediaList) { media ->
-                    MediaCard(media = media, onClick = {
+                    MediaCard(mediaDBModel = media, onClick = {
                         when (media.type) {
-                            ContentTypes.GAME -> navController.navigate("game_detail/${media.id}")
+                            ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
                             else -> navController.navigate("multimedia_detail/${media.id}")
                         }
                     })
