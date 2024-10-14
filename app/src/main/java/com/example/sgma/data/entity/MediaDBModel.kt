@@ -13,5 +13,5 @@ data class MediaDBModel(
     val sgmaRating: Double,
     val anotherRating: Double,
     val type: String,
-    val statusType: String = StatusType.NONE.name
+    val statusType: String = StatusType.None.name
 )

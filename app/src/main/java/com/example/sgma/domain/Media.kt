@@ -12,5 +12,5 @@ data class Media(
     val sgmaRating: Double,
     val anotherRating: Double,
     val type: ContentTypes,
-    val statusType: StatusType = StatusType.NONE
+    val statusType: StatusType = StatusType.None
 )

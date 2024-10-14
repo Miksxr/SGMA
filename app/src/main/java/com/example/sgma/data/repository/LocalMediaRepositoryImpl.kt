@@ -15,19 +15,23 @@ class LocalMediaRepositoryImpl @Inject constructor(
         localDatasource.insertMediaItem(mapper.mapTOMediaDbModel(mediaDBModel))
     }
 
-    override suspend fun checkMediaInDatabase(id: Int): Media {
+    override suspend fun checkMediaInDatabase(id: Int): Media? {
         return mapper.map(localDatasource.checkMediaInDatabase(id))
     }
 
     override suspend fun getAllMedia(): List<Media> {
-        return localDatasource.getAllMedia().map { mapper.map(it) }
+        return localDatasource.getAllMedia().map { mapper.map(it)!! }
     }
 
     override suspend fun updateStatusType(type: StatusType, id: Int) {
         localDatasource.updateStatusType(type.name, id)
     }
 
-    override suspend fun selectByType(statusType: StatusType): List<Media> {
+    override suspend fun selectByType(statusType: StatusType): List<Media?> {
         return localDatasource.selectByType(statusType.name).map { mapper.map(it) }
+    }
+
+    override suspend fun deleteMedia(media: Media) {
+        localDatasource.deleteMedia(mapper.mapTOMediaDbModel(media))
     }
 }

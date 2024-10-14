@@ -1,6 +1,8 @@
 package com.example.sgma.data.datasource.local
 
+import android.provider.MediaStore.Audio.Media
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.sgma.data.entity.MediaDBModel
@@ -13,7 +15,7 @@ interface MediaItemDao {
     fun insertMediaItem(mediaDBModel: MediaDBModel)
 
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
-    fun checkMediaInDatabase(id: Int) : MediaDBModel
+    fun checkMediaInDatabase(id: Int) : MediaDBModel?
 
     @Query("SELECT * FROM media")
     fun getAllMedia() : List<MediaDBModel>
@@ -23,4 +25,7 @@ interface MediaItemDao {
 
     @Query("SELECT * FROM media WHERE statusType = :statusType")
     fun selectByType(statusType: String) : List<MediaDBModel>
+
+    @Delete
+    fun deleteMedia(media: MediaDBModel)
 }

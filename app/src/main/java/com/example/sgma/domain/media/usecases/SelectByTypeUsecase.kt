@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SelectByTypeUsecase @Inject constructor(
     private val repository: LocalMediaRepository
 ) {
-    suspend operator fun invoke(statusType: StatusType) : List<Media>{
+    suspend operator fun invoke(statusType: StatusType) : List<Media?>{
         return repository.selectByType(statusType)
     }
 }

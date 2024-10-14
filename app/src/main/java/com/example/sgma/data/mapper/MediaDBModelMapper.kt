@@ -7,16 +7,16 @@ import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.Media
 
 class MediaDBModelMapper {
-    fun map(mediaDBModel: MediaDBModel) : Media {
+    fun map(mediaDBModel: MediaDBModel?) : Media? {
         return Media (
-            id = mediaDBModel.id,
-            name = mediaDBModel.name,
-            image = mediaDBModel.image,
-            year = mediaDBModel.year,
-            sgmaRating = mediaDBModel.sgmaRating,
-            anotherRating = mediaDBModel.sgmaRating,
-            type = ContentTypes.valueOf(mediaDBModel.type),
-            statusType = StatusType.valueOf(mediaDBModel.statusType)
+            id = mediaDBModel?.id ?: -1,
+            name = mediaDBModel?.name ?: "",
+            image = mediaDBModel?.image ?: -1,
+            year = mediaDBModel?.year ?: -1,
+            sgmaRating = mediaDBModel?.sgmaRating ?: -1.0,
+            anotherRating = mediaDBModel?.sgmaRating ?: -1.0,
+            type = ContentTypes.valueOf(mediaDBModel?.type ?: ContentTypes.Unknown.name),
+            statusType = StatusType.valueOf(mediaDBModel?.statusType ?: StatusType.None.name)
         )
     }
 

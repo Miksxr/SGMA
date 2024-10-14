@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.Media
 import com.example.sgma.domain.media.usecases.CheckMediaInDBUsecase
+import com.example.sgma.domain.media.usecases.DeleteMediaUsecase
 import com.example.sgma.domain.media.usecases.GetAllMediaUsecase
 import com.example.sgma.domain.media.usecases.InsertMediaUsecase
 import com.example.sgma.domain.media.usecases.SelectByTypeUsecase
@@ -22,11 +23,12 @@ class LocalMediaViewModel(
     private val insertMediaUsecase: InsertMediaUsecase,
     private val checkMediaInDBUsecase: CheckMediaInDBUsecase,
     private val updateStatusTypeUsecase: UpdateStatusTypeUsecase,
-    private val selectByTypeUsecase: SelectByTypeUsecase
+    private val selectByTypeUsecase: SelectByTypeUsecase,
+    private val deleteMediaUsecase: DeleteMediaUsecase
 ) : ViewModel() {
 
-    private val _localMedia : MutableLiveData<List<Media>> = MutableLiveData()
-    val localMedia : LiveData<List<Media>> = _localMedia
+    private val _localMedia : MutableLiveData<List<Media?>> = MutableLiveData()
+    val localMedia : LiveData<List<Media?>> = _localMedia
 
     private val _inDB : MutableLiveData<Boolean> = MutableLiveData()
     val inDB : LiveData<Boolean> = _inDB
@@ -63,7 +65,13 @@ class LocalMediaViewModel(
     fun checkMediaInDB(id : Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val media = checkMediaInDBUsecase(id)
-            _inDB.postValue(media.id != null)
+            _inDB.postValue(media != null)
+        }
+    }
+
+    fun deleteMedia(media: Media) {
+        CoroutineScope(Dispatchers.IO).launch {
+            deleteMediaUsecase(media)
         }
     }
 }

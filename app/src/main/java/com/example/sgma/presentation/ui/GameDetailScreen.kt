@@ -1,6 +1,7 @@
 package com.example.sgma.presentation.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,15 +11,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,9 +32,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
+import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
+import com.example.sgma.domain.Media
+import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
-import javax.inject.Inject
 
 @Composable
 fun GameDetailScreen(
@@ -43,9 +49,14 @@ fun GameDetailScreen(
         val inCollectionState = remember {
             mutableStateOf(false)
         }
+        val statusType = remember {
+            mutableStateOf(game.statusType)
+        }
         viewModel.inDB.observe(context as LifecycleOwner, {
             inCollectionState.value = it
         })
+
+        viewModel.checkMediaInDB(game.id)
 
         Button(
             onClick = { navController.popBackStack() }, // Возврат назад по навигации
@@ -81,12 +92,58 @@ fun GameDetailScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
-        if (inCollectionState.value) {
-            Text(
-                text = "${game.statusType}",
-                fontSize = 20.sp
+        var expanded by remember { mutableStateOf(false) }
+        val suggestions = listOf(
+            StatusType.Completed.name,
+            StatusType.Played.name,
+            StatusType.Playing.name,
+            StatusType.Replaying.name,
+            StatusType.WatchedWalkthrough.name,
+            StatusType.HaventPlayed.name,
+            StatusType.InPlans.name,
+            StatusType.None.name
             )
+
+        Column {
+            Button(onClick = {
+                expanded = !expanded
+            }) {
+                Text(statusType.value.name)
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                )
+            }
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                suggestions.forEach { label ->
+                    DropdownMenuItem(text = {
+                        Text(label)
+                    }, onClick = {
+                        statusType.value = StatusType.valueOf(label)
+                        val media = Media(
+                            id = game.id,
+                            name = game.name,
+                            image = game.image,
+                            year = game.year,
+                            sgmaRating = game.sgmaRating,
+                            anotherRating = game.metacritic,
+                            type = ContentTypes.Game,
+                            statusType = StatusType.None
+                        )
+                        if (label == StatusType.None.name && inCollectionState.value) {
+                            viewModel.deleteMedia(media)
+                        } else if (inCollectionState.value) {
+                            viewModel.updateStatusType(StatusType.valueOf(label), game.id)
+                        } else {
+                            viewModel.insertMedia(media)
+                        }
+                        expanded = false
+                    })
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))

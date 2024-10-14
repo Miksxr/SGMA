@@ -7,11 +7,13 @@ import com.example.sgma.domain.Media
 interface LocalMediaRepository {
     suspend fun insertMediaItem(mediaDBModel: Media)
 
-    suspend fun checkMediaInDatabase(id: Int) : Media
+    suspend fun checkMediaInDatabase(id: Int) : Media?
 
     suspend fun getAllMedia() : List<Media>
 
     suspend fun updateStatusType(type: StatusType, id: Int)
 
-    suspend fun selectByType(statusType: StatusType) : List<Media>
+    suspend fun selectByType(statusType: StatusType) : List<Media?>
+
+    suspend fun deleteMedia(media: Media)
 }

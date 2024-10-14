@@ -6,6 +6,7 @@ import com.example.sgma.data.datasource.local.LocalDatasourceImpl
 import com.example.sgma.data.mapper.MediaDBModelMapper
 import com.example.sgma.data.repository.LocalMediaRepositoryImpl
 import com.example.sgma.domain.media.usecases.CheckMediaInDBUsecase
+import com.example.sgma.domain.media.usecases.DeleteMediaUsecase
 import com.example.sgma.domain.media.usecases.GetAllMediaUsecase
 import com.example.sgma.domain.media.usecases.InsertMediaUsecase
 import com.example.sgma.domain.media.usecases.SelectByTypeUsecase
@@ -40,7 +41,8 @@ object LocalMediaModule {
             getAllMediaUsecase = GetAllMediaUsecase(repository),
             checkMediaInDBUsecase = CheckMediaInDBUsecase(repository),
             selectByTypeUsecase = SelectByTypeUsecase(repository),
-            updateStatusTypeUsecase = UpdateStatusTypeUsecase(repository)
+            updateStatusTypeUsecase = UpdateStatusTypeUsecase(repository),
+            deleteMediaUsecase = DeleteMediaUsecase(repository)
         )
     }
 }

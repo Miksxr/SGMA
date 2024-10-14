@@ -1,6 +1,6 @@
 package com.example.sgma.data.entity
 
-import kotlinx.serialization.Serializable
+import com.example.sgma.domain.Media
 
 // на основе RAW
 // сущность которая отображается в полной версии страницы игры
@@ -13,5 +13,5 @@ data class Game(
     val sgmaRating: Double,
     val metacritic: Double,
     val description: String,
-    val statusType: StatusType = StatusType.NONE // Я добавил
+    val statusType: StatusType = StatusType.None // Я добавил
 )
