@@ -53,6 +53,7 @@ fun GameDetailScreen(
             mutableStateOf(game.statusType)
         }
         viewModel.inDB.observe(context as LifecycleOwner, {
+            Log.d("LOG", it.toString())
             inCollectionState.value = it
         })
 
@@ -107,6 +108,7 @@ fun GameDetailScreen(
         Column {
             Button(onClick = {
                 expanded = !expanded
+                viewModel.checkMediaInDB(game.id)
             }) {
                 Text(statusType.value.name)
                 Icon(
@@ -122,6 +124,7 @@ fun GameDetailScreen(
                     DropdownMenuItem(text = {
                         Text(label)
                     }, onClick = {
+
                         statusType.value = StatusType.valueOf(label)
                         val media = Media(
                             id = game.id,
@@ -131,7 +134,7 @@ fun GameDetailScreen(
                             sgmaRating = game.sgmaRating,
                             anotherRating = game.metacritic,
                             type = ContentTypes.Game,
-                            statusType = StatusType.None
+                            statusType = StatusType.valueOf(label)
                         )
                         if (label == StatusType.None.name && inCollectionState.value) {
                             viewModel.deleteMedia(media)

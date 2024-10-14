@@ -1,5 +1,6 @@
 package com.example.sgma.domain.media.viemodel
 
+import android.util.Log
 import androidx.compose.foundation.text.selection.DisableSelection
 import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.lifecycle.LiveData
@@ -65,7 +66,7 @@ class LocalMediaViewModel(
     fun checkMediaInDB(id : Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val media = checkMediaInDBUsecase(id)
-            _inDB.postValue(media != null)
+            _inDB.postValue(media?.id != -1)
         }
     }
 
