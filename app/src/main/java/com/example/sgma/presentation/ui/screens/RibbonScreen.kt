@@ -18,11 +18,13 @@ import com.example.sgma.presentation.SGMAAppBar
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.navigation.NavigationItem
 import com.example.sgma.presentation.ui.MediaCard
+import com.example.sgma.presentation.ui.NewsCard
 import com.example.sgma.presentation.ui.getFakeMediaList
+import com.example.sgma.presentation.ui.getFakeNewsList
 
 @Composable
 fun RibbonScreen(navController: NavController) {
-    val mediaList = getFakeMediaList()
+    val newsList = getFakeNewsList()
     var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
@@ -42,13 +44,8 @@ fun RibbonScreen(navController: NavController) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(mediaList.filter { it.name.contains(searchQuery, ignoreCase = true) }) { media ->
-                    MediaCard(mediaDBModel = media, onClick = {
-                        when (media.type) {
-                            ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
-                            else -> navController.navigate("multimedia_detail/${media.id}")
-                        }
-                    })
+                items(newsList.filter { it.name.contains(searchQuery, ignoreCase = true) }) { news ->
+                    NewsCard(newsDBModel = news)
                 }
             }
         }

@@ -98,12 +98,10 @@ fun MultimediaDetailScreen(
 
         var expanded by remember { mutableStateOf(false) }
         val suggestions = listOf(
-            StatusType.Completed.name,
-            StatusType.Played.name,
-            StatusType.Playing.name,
-            StatusType.Replaying.name,
-            StatusType.WatchedWalkthrough.name,
-            StatusType.HaventPlayed.name,
+            StatusType.Watching.name,
+            StatusType.Watched.name,
+            StatusType.Rewatching.name,
+            StatusType.HaventWatched.name,
             StatusType.InPlans.name,
             StatusType.None.name
         )
