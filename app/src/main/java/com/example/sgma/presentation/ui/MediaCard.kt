@@ -49,6 +49,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                     contentDescription = mediaDBModel.name,
                     modifier = Modifier.fillMaxSize()
                 )
+
                 Box(
                     modifier = Modifier
                         .background(Color.Black.copy(alpha = 0.7f))
@@ -62,7 +63,9 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                     )
                 }
             }
+
             Spacer(modifier = Modifier.width(8.dp))
+
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -71,10 +74,12 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
+
                 Text(
                     text = "${mediaDBModel.type} • ${mediaDBModel.year}",
                     fontSize = 18.sp,
                 )
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -82,24 +87,28 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                         text = "${mediaDBModel.sgmaRating}",
                         fontSize = 18.sp
                     )
+
                     Spacer(modifier = Modifier.width(4.dp))
+
                     Image(
                         painter = painterResource(id = R.drawable.sigma),
                         contentDescription = "Sigma Icon",
                         modifier = Modifier.size(16.dp)
                     )
+
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
                         text = "${mediaDBModel.anotherRating}",
                         fontSize = 18.sp
                     )
+
                     Spacer(modifier = Modifier.width(4.dp))
-                    // Условие для отображения иконки метакритика или кинопоиска
+
                     val ratingIcon = if (mediaDBModel.type == ContentTypes.Game) {
-                        R.drawable.metacritic // Замените на иконку метакритика
+                        R.drawable.metacritic
                     } else {
-                        R.drawable.kinopoisk // Иконка для других типов
+                        R.drawable.kinopoisk
                     }
 
                     Image(

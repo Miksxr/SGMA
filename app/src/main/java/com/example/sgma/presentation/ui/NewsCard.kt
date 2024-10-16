@@ -52,15 +52,17 @@ fun NewsCard(newsDBModel: News) {
                     .fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
+
             Column(
                 modifier = Modifier
-                .padding(8.dp)
+                    .padding(8.dp)
             ) {
                 Text(
                     text = newsDBModel.name,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
+
                 Text(
                     text = "${newsDBModel.media} ${newsDBModel.statusType}",
                     fontSize = 20.sp

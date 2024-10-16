@@ -13,6 +13,7 @@ import com.example.sgma.presentation.ui.GameDetailScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
 import com.example.sgma.presentation.ui.MultimediaDetailScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
+import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
 
 @Composable
@@ -32,7 +33,7 @@ fun CombinedGraph(
             RibbonScreen(navController = navController)
         }
         composable("Профиль") {
-            // В будущем: экран профиля
+            ProfileScreen(navController = navController)
         }
 
         // Второй граф
