@@ -12,6 +12,7 @@ import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.presentation.ui.GameDetailScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
 import com.example.sgma.presentation.ui.MultimediaDetailScreen
+import com.example.sgma.presentation.ui.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
@@ -22,10 +23,10 @@ fun CombinedGraph(
     viewModel: LocalMediaViewModel,
     context : Context
 ) {
-    val mediaList = getFakeMediaList() // Получаем фейковый список медиа
+    val mediaList = getFakeMediaList()
 
     NavHost(navController = navController, startDestination = "Главная") {
-        // Первый граф
+
         composable("Главная") {
             MainScreen(navController = navController)
         }
@@ -36,7 +37,10 @@ fun CombinedGraph(
             ProfileScreen(navController = navController)
         }
 
-        // Второй граф
+        composable("Настройки") {
+            SettingsScreen(navController = navController)
+        }
+
         composable("media_list") {
             MainScreen(navController = navController)
         }
@@ -55,7 +59,7 @@ fun CombinedGraph(
                         statusType = it.statusType,
                         description = "Описание для игры ${it.name}"
                     ),
-                    navController = navController, // Убедитесь, что здесь правильный параметр
+                    navController = navController,
                     viewModel,
                     context
                 )
@@ -76,7 +80,7 @@ fun CombinedGraph(
                         statusType = it.statusType,
                         description = "Описание для мультимедия ${it.name}"
                     ),
-                    navController = navController, // Убедитесь, что здесь правильный параметр
+                    navController = navController,
                     viewModel,
                     context
                 )

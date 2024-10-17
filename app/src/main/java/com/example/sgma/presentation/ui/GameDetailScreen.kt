@@ -60,10 +60,10 @@ fun GameDetailScreen(
         viewModel.checkMediaInDB(game.id)
 
         Button(
-            onClick = { navController.popBackStack() }, // Возврат назад по навигации
+            onClick = { navController.popBackStack() },
             modifier = Modifier
                 .align(Alignment.Start)
-                .size(80.dp, 40.dp) // Увеличенные размеры кнопки,
+                .size(80.dp, 40.dp)
 
         ) {
             Image(

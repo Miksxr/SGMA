@@ -14,11 +14,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.presentation.SGMAAppBar
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.navigation.NavigationItem
 import com.example.sgma.presentation.ui.MediaCard
 import com.example.sgma.presentation.ui.NewsCard
+import com.example.sgma.presentation.ui.SGMAAppBar
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.getFakeNewsList
 
@@ -30,10 +30,10 @@ fun RibbonScreen(navController: NavController) {
     Scaffold(
         topBar = {
             SGMAAppBar(
-                title = "SGMA",
-                onSettingsClick = { /* Действие для значка настроек */ },
                 onSearchQueryChange = { newQuery -> searchQuery = newQuery },
-                searchQuery = searchQuery
+                searchQuery = searchQuery,
+                searchPlaceholder = "Поиск новостей...",
+                navController = navController
             )
         },
         bottomBar = {

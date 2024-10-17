@@ -6,9 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -25,7 +29,6 @@ import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.presentation.navigation.CombinedGraph
-import com.example.sgma.presentation.navigation.Graph
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.GameDetailScreen
 import com.example.sgma.presentation.ui.theme.SGMATheme
@@ -53,34 +56,4 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SGMAAppBar(
-    title: String,
-    onSettingsClick: () -> Unit,
-    onSearchQueryChange: (String) -> Unit,
-    searchQuery: String
-) {
-    Column {
-        TopAppBar(
-            title = { Text(text = title) },
-            actions = {
-                IconButton(onClick = onSettingsClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.icon_settings),
-                        contentDescription = "Настройки"
-                    )
-                }
-            }
-        )
-        // Поле поиска
-        TextField(
-            value = searchQuery,
-            onValueChange = onSearchQueryChange,
-            placeholder = { Text(text = "Поиск...") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-        )
-    }
-}
+

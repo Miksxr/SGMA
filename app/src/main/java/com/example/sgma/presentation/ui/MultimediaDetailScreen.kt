@@ -207,7 +207,7 @@ fun MultimediaDetailScreen(
             fontSize = 22.sp
         )
         Text(
-            text = multimedia.description, // Добавьте это поле в класс Multimedia, если его еще нет
+            text = multimedia.description,
             fontSize = 20.sp
         )
     }

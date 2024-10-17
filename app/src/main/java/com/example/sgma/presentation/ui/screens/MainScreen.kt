@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.presentation.SGMAAppBar
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.MediaCard
+import com.example.sgma.presentation.ui.SGMAAppBar
 import com.example.sgma.presentation.ui.getFakeMediaList
 
 @Composable
@@ -37,10 +37,10 @@ fun MainScreen(navController: NavController) {
     Scaffold(
         topBar = {
             SGMAAppBar(
-                title = "SGMA",
-                onSettingsClick = { /* Действие для значка настроек */ },
                 onSearchQueryChange = { newQuery -> searchQuery = newQuery },
-                searchQuery = searchQuery
+                searchQuery = searchQuery,
+                searchPlaceholder = "Поиск медиа...",
+                navController = navController
             )
         },
         bottomBar = {

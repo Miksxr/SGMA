@@ -46,7 +46,7 @@ fun NewsCard(newsDBModel: News) {
                 painter = painterResource(id = newsDBModel.image),
                 contentDescription = "Image News",
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(75.dp)
                     .padding(8.dp)
                     .clip(CircleShape)
                     .fillMaxSize(),
@@ -59,13 +59,13 @@ fun NewsCard(newsDBModel: News) {
             ) {
                 Text(
                     text = newsDBModel.name,
-                    fontSize = 22.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = "${newsDBModel.media} ${newsDBModel.statusType}",
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
             }
         }

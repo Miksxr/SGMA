@@ -1,6 +1,7 @@
 package com.example.sgma.presentation.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -41,9 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sgma.R
-import com.example.sgma.presentation.SGMAAppBar
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.NewsCard
+import com.example.sgma.presentation.ui.SGMAAppBar
 import com.example.sgma.presentation.ui.getFakeNewsList
 
 @Composable
@@ -53,19 +56,21 @@ fun ProfileScreen(navController: NavController) {
     Scaffold(
         topBar = {
             SGMAAppBar(
-                title = "SGMA",
-                onSettingsClick = { /* Действие для значка настроек */ },
                 onSearchQueryChange = { newQuery -> searchQuery = newQuery },
-                searchQuery = searchQuery
+                searchQuery = searchQuery,
+                searchPlaceholder = "Поиск профилей...",
+                navController = navController
             )
         },
         bottomBar = {
             Navigation(navController = navController)
         }
     ) { innerPadding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
 
             Image(
                 painter = painterResource(id = R.drawable.say_my_name),
@@ -77,7 +82,7 @@ fun ProfileScreen(navController: NavController) {
                     .align(Alignment.CenterHorizontally),
                 contentScale = ContentScale.Crop,
 
-            )
+                )
 
             Text(
                 text = "Say my name!",
@@ -98,11 +103,22 @@ fun ProfileScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(
+            Text(
+                text = "7",
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            IconButton(
                 onClick = { /* Действие для кнопки "Друзья" */ },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
-                Text(text = "Друзья")
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_friends),
+                    contentDescription = "Друзья",
+                    modifier = Modifier.size(36.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -127,17 +143,28 @@ fun ProfileScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Button(
-                            onClick = { /* Действие для кнопки "Друзья" */ },
-                            modifier = Modifier.size(70.dp, 30.dp)
-                        ) {
-                            Text(
-                                text = "Все",
-                                fontSize = 12.sp
-                            )
-                        }
+                        Text(
+                            text = "Все",
+                            color = Color.Red,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .clickable { /* Действие для нажатия на "Все" */ }
+                                .padding(8.dp) // Дополнительный отступ
+                        )
+                    }
+
+                    Column(modifier = Modifier.padding(start = 2.dp)) {
+                        Text(text = "Фильмы: 14")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Сериалы: 48")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Аниме: 52")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "Игры: 69")
                     }
                 }
+
+                Spacer(modifier = Modifier.width(18.dp))
 
                 VerticalDivider(
                     color = Color.Gray.copy(alpha = 0.5f),
@@ -163,15 +190,24 @@ fun ProfileScreen(navController: NavController) {
 
                         Spacer(modifier = Modifier.weight(1f))
 
-                        Button(
-                            onClick = { /* Действие для кнопки "Друзья" */ },
-                            modifier = Modifier.size(70.dp, 30.dp)
-                        ) {
-                            Text(
-                                text = "Все",
-                                fontSize = 12.sp
-                            )
-                        }
+                        Text(
+                            text = "Все",
+                            color = Color.Red,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .clickable { /* Действие для нажатия на "Все" */ }
+                                .padding(8.dp) // Дополнительный отступ
+                        )
+                    }
+
+                    Column(modifier = Modifier.padding(start = 2.dp)) {
+                        Text(text = ">90: 82")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "75-90: 34")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "50-75: 1")
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(text = "<50: 77")
                     }
                 }
             }
