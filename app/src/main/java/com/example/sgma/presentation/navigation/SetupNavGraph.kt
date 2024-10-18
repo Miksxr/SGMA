@@ -12,58 +12,10 @@ import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.presentation.ui.GameDetailScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
 import com.example.sgma.presentation.ui.MultimediaDetailScreen
+import com.example.sgma.presentation.ui.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
-
-@Composable
-fun SetupNavGraph(
-    navController: NavHostController,
-    viewModel: LocalMediaViewModel,
-    context: Context
-) {
-    val mediaList = getFakeMediaList()
-
-    NavHost(
-        navController = navController,
-        startDestination = "media_list"
-    ) {
-        composable("media_list") {
-            MainScreen(navController = navController)
-        }
-        composable("game_detail/{gameId}") { backStackEntry ->
-            val gameId = backStackEntry.arguments?.getString("gameId")?.toIntOrNull()
-            val game = mediaList.find { it.id == gameId && it.type == ContentTypes.Game }
-            game?.let {
-                GameDetailScreen(game = Game(
-                    id = it.id,
-                    name = it.name,
-                    image = it.image,
-                    year = it.year,
-                    sgmaRating = it.sgmaRating,
-                    metacritic = it.anotherRating,
-                    statusType = it.statusType,
-                    description = "Описание для игры ${it.name}"
-                ), navController, viewModel, context)
-            }
-        }
-        composable("multimedia_detail/{mediaId}") { backStackEntry ->
-            val mediaId = backStackEntry.arguments?.getString("mediaId")?.toIntOrNull()
-            val multimedia = mediaList.find { it.id == mediaId && it.type != ContentTypes.Game }
-            multimedia?.let {
-                MultimediaDetailScreen(multimedia = Multimedia(
-                    id = it.id,
-                    nameRu = it.name,
-                    image = it.image,
-                    year = it.year,
-                    sgmaRating = it.sgmaRating,
-                    kinopoiskReting = it.anotherRating,
-                    statusType = it.statusType,
-                    description = "Описание для мультимедия ${it.name}"
-                ), navController
-                )
-            }
-        }
-    }
-}
+import com.example.sgma.presentation.ui.screens.ProfileScreen
+import com.example.sgma.presentation.ui.screens.RibbonScreen
 
 @Composable
 fun CombinedGraph(
@@ -71,21 +23,24 @@ fun CombinedGraph(
     viewModel: LocalMediaViewModel,
     context : Context
 ) {
-    val mediaList = getFakeMediaList() // Получаем фейковый список медиа
+    val mediaList = getFakeMediaList()
 
     NavHost(navController = navController, startDestination = "Главная") {
-        // Первый граф
+
         composable("Главная") {
             MainScreen(navController = navController)
         }
         composable("Лента") {
-            // В будущем: экран ленты
+            RibbonScreen(navController = navController)
         }
         composable("Профиль") {
-            // В будущем: экран профиля
+            ProfileScreen(navController = navController)
         }
 
-        // Второй граф
+        composable("Настройки") {
+            SettingsScreen(navController = navController)
+        }
+
         composable("media_list") {
             MainScreen(navController = navController)
         }
@@ -104,7 +59,7 @@ fun CombinedGraph(
                         statusType = it.statusType,
                         description = "Описание для игры ${it.name}"
                     ),
-                    navController = navController, // Убедитесь, что здесь правильный параметр
+                    navController = navController,
                     viewModel,
                     context
                 )
@@ -125,7 +80,9 @@ fun CombinedGraph(
                         statusType = it.statusType,
                         description = "Описание для мультимедия ${it.name}"
                     ),
-                    navController = navController // Убедитесь, что здесь правильный параметр
+                    navController = navController,
+                    viewModel,
+                    context
                 )
             }
         }
