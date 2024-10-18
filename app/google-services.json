@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "294365534608",
+    "firebase_url": "https://sgma-5faa9-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sgma-5faa9",
+    "storage_bucket": "sgma-5faa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294365534608:android:72f3b6fc3b6877edff7b15",
+        "android_client_info": {
+          "package_name": "com.example.sgma"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABEoyAto5mSrw1f7XdgEbfh7LQDKIQcj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

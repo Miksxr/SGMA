@@ -3,7 +3,7 @@ package com.example.sgma.presentation.ui
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 
 fun getFakeMediaList(): List<Media> {
     return listOf(

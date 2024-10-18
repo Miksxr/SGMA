@@ -1,13 +1,10 @@
 package com.example.sgma.domain.media.viemodel
 
-import android.util.Log
-import androidx.compose.foundation.text.selection.DisableSelection
-import androidx.compose.runtime.collection.mutableVectorOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.usecases.CheckMediaInDBUsecase
 import com.example.sgma.domain.media.usecases.DeleteMediaUsecase
 import com.example.sgma.domain.media.usecases.GetAllMediaUsecase
@@ -17,7 +14,6 @@ import com.example.sgma.domain.media.usecases.UpdateStatusTypeUsecase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LocalMediaViewModel(
     private val getAllMediaUsecase: GetAllMediaUsecase,

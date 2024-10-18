@@ -1,11 +1,10 @@
 package com.example.sgma.data.datasource.local
 
-import android.provider.MediaStore.Audio.Media
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.sgma.data.entity.MediaDBModel
+import com.example.sgma.data.entity.localmedia.MediaDBModel
 
 // dao интерфейс проводит взаимодействие с локальной базой данных
 @Dao

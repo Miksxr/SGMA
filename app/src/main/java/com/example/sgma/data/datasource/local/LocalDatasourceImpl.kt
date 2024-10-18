@@ -1,9 +1,7 @@
 package com.example.sgma.data.datasource.local
 
 import android.content.Context
-import com.example.sgma.data.entity.MediaDBModel
-import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.data.entity.localmedia.MediaDBModel
 import javax.inject.Inject
 
 // имплементация интерфейса LocalDatasource

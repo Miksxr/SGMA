@@ -1,7 +1,8 @@
-package com.example.sgma.data.entity
+package com.example.sgma.data.entity.localmedia
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.sgma.data.entity.StatusType
 
 // модель для хранения в бд
 @Entity("media")
