@@ -1,6 +1,8 @@
 package com.example.sgma.presentation.ui.screens
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,16 +46,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
+import com.example.sgma.domain.profile.Profile
+import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.NewsCard
 import com.example.sgma.presentation.ui.SGMAAppBar
 import com.example.sgma.presentation.ui.getFakeNewsList
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    profileViewModel: ProfileViewModel,
+    context: Context
+) {
     var searchQuery by remember { mutableStateOf("") }
+    var profile by remember {
+        mutableStateOf(profileViewModel.account.value)
+    }
+
+    profileViewModel.account.observe(context as LifecycleOwner, {
+        profile = it
+    })
+
+    profileViewModel.lastActionResult.observe(context as LifecycleOwner, {
+        if (it) {
+            profileViewModel.getAccountData(profile?.login ?: "")
+        }
+        else {
+            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
+        }
+    })
 
     Scaffold(
         topBar = {
@@ -73,10 +99,11 @@ fun ProfileScreen(navController: NavController) {
                 .padding(innerPadding)
         ) {
 
+            Log.d("LOG", profile?.image?.toString() ?: "0")
             Log.d("LOG", R.drawable.say_my_name.toString())
 
             Image(
-                painter = painterResource(id = R.drawable.say_my_name),
+                painter = painterResource(id = profile?.image ?: R.drawable.icon_profile ),
                 contentDescription = "Profile",
                 modifier = Modifier
                     .size(150.dp)
@@ -88,7 +115,7 @@ fun ProfileScreen(navController: NavController) {
                 )
 
             Text(
-                text = "Say my name!",
+                text = profile?.name ?: "",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -98,7 +125,7 @@ fun ProfileScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Волтер Вайт УНИКИТА",
+                text = profile?.description ?: "",
                 fontSize = 16.sp,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -107,7 +134,7 @@ fun ProfileScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "7",
+                text = profile?.friends?.count()?.toString() ?: "0",
                 fontSize = 18.sp,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -157,13 +184,13 @@ fun ProfileScreen(navController: NavController) {
                     }
 
                     Column(modifier = Modifier.padding(start = 2.dp)) {
-                        Text(text = "Фильмы: 14")
+                        Text(text = "Фильмы: ${profile?.statistic?.films ?: 0}")
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Сериалы: 48")
+                        Text(text = "Сериалы: ${profile?.statistic?.serials ?: 0}")
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Аниме: 52")
+                        Text(text = "Аниме: ${profile?.statistic?.anime ?: 0}")
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Игры: 69")
+                        Text(text = "Игры: ${profile?.statistic?.games ?: 0}")
                     }
                 }
 

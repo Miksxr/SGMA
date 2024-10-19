@@ -13,7 +13,7 @@ class CommentMapper {
         )
     }
 
-    fun mapToComments(model : Comment) : CommentsDtoModel {
+    fun mapToDtoModel(model : Comment) : CommentsDtoModel {
         return CommentsDtoModel(
             filmId = model.filmId,
             sgma_rating = model.sgma_rating,

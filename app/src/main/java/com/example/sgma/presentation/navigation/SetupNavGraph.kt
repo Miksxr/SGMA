@@ -9,6 +9,7 @@ import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.GameDetailScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
 import com.example.sgma.presentation.ui.MultimediaDetailScreen
@@ -21,6 +22,7 @@ import com.example.sgma.presentation.ui.screens.RibbonScreen
 fun CombinedGraph(
     navController: NavHostController,
     viewModel: LocalMediaViewModel,
+    profileViewModel: ProfileViewModel,
     context : Context
 ) {
     val mediaList = getFakeMediaList()
@@ -34,7 +36,7 @@ fun CombinedGraph(
             RibbonScreen(navController = navController)
         }
         composable("Профиль") {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, profileViewModel, context)
         }
 
         composable("Настройки") {

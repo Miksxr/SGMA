@@ -8,5 +8,6 @@ data class Profile(
     val description: String,
     val comments : List<Comment>,
     val friends : List<String>,
-    val statistic: Statistic
+    val statistic: Statistic,
+    val login : String
 )
