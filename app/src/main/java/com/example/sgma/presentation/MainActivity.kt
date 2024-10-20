@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
             SGMATheme {
                 val navController = rememberNavController()
                 Scaffold(
-                    bottomBar = { Navigation(navController = navController) }
+
                 ) {
                     CombinedGraph(navController = navController, viewModel, this)
                 }

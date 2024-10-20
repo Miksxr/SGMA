@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -62,32 +63,26 @@ fun MultimediaDetailScreen(
 
         viewModel.checkMediaInDB(multimedia.id)
 
-        // Кнопка "Назад"
-        Button(
-            onClick = { navController.popBackStack() }, // Возврат назад по навигации
-            modifier = Modifier
-                .size(80.dp, 40.dp) // Увеличенные размеры кнопки
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.icon_back), // Иконка "Назад"
-                contentDescription = "back"
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_back),
+                contentDescription = "Назад",
+                modifier = Modifier.size(32.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Большая картинка
         Image(
             painter = painterResource(id = multimedia.image),
             contentDescription = multimedia.nameRu,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Увеличенный размер изображения
+                .height(300.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Название мультимедиа (жирное и большое)
         Text(
             text = multimedia.nameRu,
             fontSize = 28.sp,
@@ -117,6 +112,7 @@ fun MultimediaDetailScreen(
                     contentDescription = null,
                 )
             }
+
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
@@ -153,13 +149,12 @@ fun MultimediaDetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-
             Text(text = "${multimedia.sgmaRating}", fontSize = 20.sp)
 
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.sigma), // Картинка рейтинга
+                painter = painterResource(id = R.drawable.sigma),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -171,7 +166,7 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.kinopoisk), // Картинка рейтинга
+                painter = painterResource(id = R.drawable.kinopoisk),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -200,12 +195,12 @@ fun MultimediaDetailScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Описание
         Text(
             text = "Описание:",
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp
         )
+
         Text(
             text = multimedia.description,
             fontSize = 20.sp

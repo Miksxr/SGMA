@@ -81,7 +81,6 @@ fun ProfileScreen(navController: NavController) {
                     .clip(CircleShape)
                     .align(Alignment.CenterHorizontally),
                 contentScale = ContentScale.Crop,
-
                 )
 
             Text(

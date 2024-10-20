@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -59,28 +60,22 @@ fun GameDetailScreen(
 
         viewModel.checkMediaInDB(game.id)
 
-        Button(
-            onClick = { navController.popBackStack() },
-            modifier = Modifier
-                .align(Alignment.Start)
-                .size(80.dp, 40.dp)
-
-        ) {
-            Image(
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
                 painter = painterResource(id = R.drawable.icon_back),
-                contentDescription = "back",
+                contentDescription = "Назад",
+                modifier = Modifier.size(32.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        
-        // Большая картинка
+
         Image(
             painter = painterResource(id = game.image),
             contentDescription = game.name,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Увеличенный размер изображения
+                .height(300.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -116,6 +111,7 @@ fun GameDetailScreen(
                     contentDescription = null,
                 )
             }
+
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
@@ -158,7 +154,7 @@ fun GameDetailScreen(
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.sigma), // Картинка рейтинга
+                painter = painterResource(id = R.drawable.sigma),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -170,7 +166,7 @@ fun GameDetailScreen(
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.metacritic), // Картинка рейтинга
+                painter = painterResource(id = R.drawable.metacritic),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -199,7 +195,6 @@ fun GameDetailScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Описание
         Text(
             text = "Описание:",
             fontWeight = FontWeight.Bold,
