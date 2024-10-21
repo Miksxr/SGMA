@@ -1,10 +1,8 @@
 package com.example.sgma.presentation.ui
 
 import com.example.sgma.R
-import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.News
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
 
 fun getFakeNewsList(): List<News> {
     return listOf(

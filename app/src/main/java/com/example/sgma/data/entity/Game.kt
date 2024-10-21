@@ -1,7 +1,5 @@
 package com.example.sgma.data.entity
 
-import com.example.sgma.domain.Media
-
 // на основе RAW
 // сущность которая отображается в полной версии страницы игры
 //@Serializable

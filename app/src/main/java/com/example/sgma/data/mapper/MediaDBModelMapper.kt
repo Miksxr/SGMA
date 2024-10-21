@@ -2,9 +2,9 @@ package com.example.sgma.data.mapper
 
 
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.MediaDBModel
+import com.example.sgma.data.entity.localmedia.MediaDBModel
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 
 class MediaDBModelMapper {
     fun map(mediaDBModel: MediaDBModel?) : Media {

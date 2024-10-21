@@ -17,8 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,10 +33,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Game
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 
 @Composable

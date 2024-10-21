@@ -1,6 +1,6 @@
 package com.example.sgma.data.datasource.local
 
-import com.example.sgma.data.entity.MediaDBModel
+import com.example.sgma.data.entity.localmedia.MediaDBModel
 
 // интерфейс который описывает все функции работы с локальным ресурсом данных
 interface LocalDatasource {

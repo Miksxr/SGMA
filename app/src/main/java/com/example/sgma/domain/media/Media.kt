@@ -1,4 +1,4 @@
-package com.example.sgma.domain
+package com.example.sgma.domain.media
 
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.StatusType

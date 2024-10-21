@@ -1,7 +1,6 @@
 package com.example.sgma.domain.media
 
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
 
 // интерфейс с которым будут работать usecase
 interface LocalMediaRepository {

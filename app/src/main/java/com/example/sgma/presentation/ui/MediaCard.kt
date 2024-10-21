@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 
 @Composable
 fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
