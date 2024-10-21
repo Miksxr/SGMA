@@ -1,5 +1,8 @@
 package com.example.sgma.domain.profile
 
+import android.media.tv.TvContract.Programs
+import com.example.sgma.data.entity.account.AccountDtoModel
+
 interface ProfileRepository {
     suspend fun changeImage(id: Int, accountName: String) : Boolean
 
@@ -15,5 +18,9 @@ interface ProfileRepository {
 
     suspend fun deleteComment(comment: Comment, accountName: String): Boolean
 
+    suspend fun registerAccount(account : Profile) : Boolean
+
     suspend fun getProfileData(name: String) : Profile
+
+    suspend fun getAccountListByName(name: String): List<Profile>
 }

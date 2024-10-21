@@ -11,24 +11,25 @@ class ProfileMapper {
     fun map(accountDtoModel: AccountDtoModel) : Profile {
         return Profile(
             name = accountDtoModel.name,
-            image = accountDtoModel.Image,
+            image = accountDtoModel.image,
             description = accountDtoModel.description,
             comments = accountDtoModel.comments.map { commentMapper.map(it) },
             friends = accountDtoModel.friends,
             statistic = statisticMapper.map(accountDtoModel.statistic),
-            login = accountDtoModel.login
+            login = accountDtoModel.login,
+            password = accountDtoModel.password
         )
     }
 
     fun mapToAccountDtoModel(profile: Profile) : AccountDtoModel {
         return AccountDtoModel(
             name = profile.name,
-            Image = profile.image,
+            image = profile.image,
             description = profile.description,
             comments = profile.comments.map { commentMapper.mapToDtoModel(it) },
             friends = profile.friends,
             statistic = statisticMapper.mapToDtoModel(profile.statistic),
-            password = "???",
+            password = profile.password,
             login = profile.login
         )
     }

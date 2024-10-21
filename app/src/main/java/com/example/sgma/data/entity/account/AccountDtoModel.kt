@@ -2,7 +2,7 @@ package com.example.sgma.data.entity.account
 
 data class AccountDtoModel(
     val name: String,
-    val Image: Int,
+    val image: Int,
     val description: String,
     val password: String,
     val comments : List<CommentsDtoModel>,
@@ -12,7 +12,7 @@ data class AccountDtoModel(
 ) {
     constructor() : this(
         name = "",
-        Image = 12,
+        image = 12,
         description = "",
         comments = emptyList(),
         friends = emptyList(),

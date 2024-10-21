@@ -19,4 +19,8 @@ interface RemoteAccountDatasource {
     suspend fun deleteComment(comment: CommentsDtoModel,  accountName: String) : Boolean
 
     suspend fun getProfileData(name: String) : AccountDtoModel
+
+    suspend fun getAccountListByName(name: String) : List<AccountDtoModel>
+
+    suspend fun registerAccount(account: AccountDtoModel) : Boolean
 }

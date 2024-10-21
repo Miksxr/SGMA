@@ -1,7 +1,7 @@
 package com.example.sgma.data.datasource.remote.accounts
 
 import com.example.sgma.data.datasource.remote.CollectionNames
-import com.example.sgma.data.datasource.remote.Firecloud
+import com.example.sgma.data.datasource.remote.Firestore
 import com.example.sgma.data.entity.account.AccountDtoModel
 import com.example.sgma.data.entity.account.CommentsDtoModel
 import com.google.firebase.firestore.FieldValue
@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 
 class RemoteAccountDatasourceImpl : RemoteAccountDatasource {
 
-    private val db : Firecloud = Firecloud(CollectionNames.accounts)
+    private val db : Firestore = Firestore(CollectionNames.accounts)
 
     private suspend fun updateData(accountName: String, data : Map<String, Any>) : Boolean {
         try {
@@ -78,6 +78,14 @@ class RemoteAccountDatasourceImpl : RemoteAccountDatasource {
         else {
             return AccountDtoModel()
         }
+    }
+
+    override suspend fun getAccountListByName(name: String): List<AccountDtoModel> {
+        return db.softFindDocument(name).toObjects(AccountDtoModel::class.java)
+    }
+
+    override suspend fun registerAccount(account: AccountDtoModel) : Boolean {
+        return db.createDocument(account.login, account)
     }
 
 }

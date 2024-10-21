@@ -99,9 +99,6 @@ fun ProfileScreen(
                 .padding(innerPadding)
         ) {
 
-            Log.d("LOG", profile?.image?.toString() ?: "0")
-            Log.d("LOG", R.drawable.say_my_name.toString())
-
             Image(
                 painter = painterResource(id = profile?.image ?: R.drawable.icon_profile ),
                 contentDescription = "Profile",

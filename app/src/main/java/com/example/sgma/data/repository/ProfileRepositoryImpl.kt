@@ -44,8 +44,16 @@ class ProfileRepositoryImpl(
         )
     }
 
+    override suspend fun registerAccount(account: Profile): Boolean {
+        return remoteAccountDatasource.registerAccount(mapper.mapToAccountDtoModel(account))
+    }
+
     override suspend fun getProfileData(name: String): Profile {
         return mapper.map(remoteAccountDatasource.getProfileData(name))
+    }
+
+    override suspend fun getAccountListByName(name: String): List<Profile> {
+        return remoteAccountDatasource.getAccountListByName(name).map { mapper.map(it) }
     }
 
 }
