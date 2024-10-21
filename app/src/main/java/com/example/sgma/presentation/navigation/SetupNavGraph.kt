@@ -9,12 +9,12 @@ import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
-import com.example.sgma.presentation.RegistrationScreen
-import com.example.sgma.presentation.ui.GameDetailScreen
-import com.example.sgma.presentation.ui.LoginScreen
+import com.example.sgma.presentation.ui.screens.RegistrationScreen
+import com.example.sgma.presentation.ui.screens.GameDetailScreen
+import com.example.sgma.presentation.ui.screens.LoginScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
-import com.example.sgma.presentation.ui.MultimediaDetailScreen
-import com.example.sgma.presentation.ui.SettingsScreen
+import com.example.sgma.presentation.ui.screens.MultimediaDetailScreen
+import com.example.sgma.presentation.ui.screens.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
@@ -32,11 +32,17 @@ fun CombinedGraph(
             LoginScreen(
                 email = "",
                 onEmailChange = {},
+                password = "",
+                onPasswordChange = {},
                 navController = navController
             )
         }
         composable("registration") {
-            RegistrationScreen(navController = navController)
+            RegistrationScreen(
+                email = "",
+                onEmailChange = {},
+                navController = navController
+            )
         }
 
         composable("main") {

@@ -1,4 +1,4 @@
-package com.example.sgma.presentation.ui
+package com.example.sgma.presentation.ui.screens
 
 import android.content.Context
 import android.util.Log
@@ -34,14 +34,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Game
-import com.example.sgma.domain.Media
+import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.data.entity.StatusType
+import com.example.sgma.domain.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 
 @Composable
-fun GameDetailScreen(
-    game: Game,
+fun MultimediaDetailScreen(
+    multimedia: Multimedia,
     navController: NavController,
     viewModel : LocalMediaViewModel,
     context: Context
@@ -51,14 +51,14 @@ fun GameDetailScreen(
             mutableStateOf(false)
         }
         val statusType = remember {
-            mutableStateOf(game.statusType)
+            mutableStateOf(multimedia.statusType)
         }
         viewModel.inDB.observe(context as LifecycleOwner, {
             Log.d("LOG", it.toString())
             inCollectionState.value = it
         })
 
-        viewModel.checkMediaInDB(game.id)
+        viewModel.checkMediaInDB(multimedia.id)
 
         IconButton(onClick = { navController.popBackStack() }) {
             Icon(
@@ -71,8 +71,8 @@ fun GameDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Image(
-            painter = painterResource(id = game.image),
-            contentDescription = game.name,
+            painter = painterResource(id = multimedia.image),
+            contentDescription = multimedia.nameRu,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -81,7 +81,7 @@ fun GameDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = game.name,
+            text = multimedia.nameRu,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -90,20 +90,18 @@ fun GameDetailScreen(
 
         var expanded by remember { mutableStateOf(false) }
         val suggestions = listOf(
-            StatusType.Completed.name,
-            StatusType.Played.name,
-            StatusType.Playing.name,
-            StatusType.Replaying.name,
-            StatusType.WatchedWalkthrough.name,
-            StatusType.HaventPlayed.name,
+            StatusType.Watching.name,
+            StatusType.Watched.name,
+            StatusType.Rewatching.name,
+            StatusType.HaventWatched.name,
             StatusType.InPlans.name,
             StatusType.None.name
-            )
+        )
 
         Column {
             Button(onClick = {
                 expanded = !expanded
-                viewModel.checkMediaInDB(game.id)
+                viewModel.checkMediaInDB(multimedia.id)
             }) {
                 Text(statusType.value.name)
                 Icon(
@@ -123,19 +121,19 @@ fun GameDetailScreen(
 
                         statusType.value = StatusType.valueOf(label)
                         val media = Media(
-                            id = game.id,
-                            name = game.name,
-                            image = game.image,
-                            year = game.year,
-                            sgmaRating = game.sgmaRating,
-                            anotherRating = game.metacritic,
+                            id = multimedia.id,
+                            name = multimedia.nameRu,
+                            image = multimedia.image,
+                            year = multimedia.year,
+                            sgmaRating = multimedia.sgmaRating,
+                            anotherRating = multimedia.kinopoiskReting,
                             type = ContentTypes.Game,
                             statusType = StatusType.valueOf(label)
                         )
                         if (label == StatusType.None.name && inCollectionState.value) {
                             viewModel.deleteMedia(media)
                         } else if (inCollectionState.value) {
-                            viewModel.updateStatusType(StatusType.valueOf(label), game.id)
+                            viewModel.updateStatusType(StatusType.valueOf(label), multimedia.id)
                         } else {
                             viewModel.insertMedia(media)
                         }
@@ -148,8 +146,7 @@ fun GameDetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-
-            Text(text = "${game.sgmaRating}", fontSize = 20.sp)
+            Text(text = "${multimedia.sgmaRating}", fontSize = 20.sp)
 
             Spacer(modifier = Modifier.width(4.dp))
 
@@ -161,12 +158,12 @@ fun GameDetailScreen(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Text(text = "${game.metacritic}", fontSize = 20.sp)
+            Text(text = "${multimedia.kinopoiskReting}", fontSize = 20.sp)
 
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.metacritic),
+                painter = painterResource(id = R.drawable.kinopoisk),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -175,21 +172,21 @@ fun GameDetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "США • ${game.year}",
+            text = "Япония • ${multimedia.year}",
             fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Издатель: Ubisoft",
+            text = "Издатель: Netflix",
             fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Жанры: шутер, рпг, песочница",
+            text = "Жанры: хоррор, комендия, хентай",
             fontSize = 20.sp
         )
 
@@ -200,10 +197,10 @@ fun GameDetailScreen(
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp
         )
+
         Text(
-            text = game.description,
+            text = multimedia.description,
             fontSize = 20.sp
         )
-       
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sgma.presentation.ui
+package com.example.sgma.presentation.ui.screens
 
 import android.content.Context
 import android.util.Log
@@ -18,8 +18,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,14 +35,13 @@ import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
-import com.example.sgma.data.entity.Multimedia
-import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.Media
+import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 
 @Composable
-fun MultimediaDetailScreen(
-    multimedia: Multimedia,
+fun GameDetailScreen(
+    game: Game,
     navController: NavController,
     viewModel : LocalMediaViewModel,
     context: Context
@@ -54,14 +51,14 @@ fun MultimediaDetailScreen(
             mutableStateOf(false)
         }
         val statusType = remember {
-            mutableStateOf(multimedia.statusType)
+            mutableStateOf(game.statusType)
         }
         viewModel.inDB.observe(context as LifecycleOwner, {
             Log.d("LOG", it.toString())
             inCollectionState.value = it
         })
 
-        viewModel.checkMediaInDB(multimedia.id)
+        viewModel.checkMediaInDB(game.id)
 
         IconButton(onClick = { navController.popBackStack() }) {
             Icon(
@@ -74,8 +71,8 @@ fun MultimediaDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Image(
-            painter = painterResource(id = multimedia.image),
-            contentDescription = multimedia.nameRu,
+            painter = painterResource(id = game.image),
+            contentDescription = game.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -84,7 +81,7 @@ fun MultimediaDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = multimedia.nameRu,
+            text = game.name,
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold
         )
@@ -93,18 +90,20 @@ fun MultimediaDetailScreen(
 
         var expanded by remember { mutableStateOf(false) }
         val suggestions = listOf(
-            StatusType.Watching.name,
-            StatusType.Watched.name,
-            StatusType.Rewatching.name,
-            StatusType.HaventWatched.name,
+            StatusType.Completed.name,
+            StatusType.Played.name,
+            StatusType.Playing.name,
+            StatusType.Replaying.name,
+            StatusType.WatchedWalkthrough.name,
+            StatusType.HaventPlayed.name,
             StatusType.InPlans.name,
             StatusType.None.name
-        )
+            )
 
         Column {
             Button(onClick = {
                 expanded = !expanded
-                viewModel.checkMediaInDB(multimedia.id)
+                viewModel.checkMediaInDB(game.id)
             }) {
                 Text(statusType.value.name)
                 Icon(
@@ -124,19 +123,19 @@ fun MultimediaDetailScreen(
 
                         statusType.value = StatusType.valueOf(label)
                         val media = Media(
-                            id = multimedia.id,
-                            name = multimedia.nameRu,
-                            image = multimedia.image,
-                            year = multimedia.year,
-                            sgmaRating = multimedia.sgmaRating,
-                            anotherRating = multimedia.kinopoiskReting,
+                            id = game.id,
+                            name = game.name,
+                            image = game.image,
+                            year = game.year,
+                            sgmaRating = game.sgmaRating,
+                            anotherRating = game.metacritic,
                             type = ContentTypes.Game,
                             statusType = StatusType.valueOf(label)
                         )
                         if (label == StatusType.None.name && inCollectionState.value) {
                             viewModel.deleteMedia(media)
                         } else if (inCollectionState.value) {
-                            viewModel.updateStatusType(StatusType.valueOf(label), multimedia.id)
+                            viewModel.updateStatusType(StatusType.valueOf(label), game.id)
                         } else {
                             viewModel.insertMedia(media)
                         }
@@ -149,7 +148,8 @@ fun MultimediaDetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "${multimedia.sgmaRating}", fontSize = 20.sp)
+
+            Text(text = "${game.sgmaRating}", fontSize = 20.sp)
 
             Spacer(modifier = Modifier.width(4.dp))
 
@@ -161,12 +161,12 @@ fun MultimediaDetailScreen(
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Text(text = "${multimedia.kinopoiskReting}", fontSize = 20.sp)
+            Text(text = "${game.metacritic}", fontSize = 20.sp)
 
             Spacer(modifier = Modifier.width(4.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.kinopoisk),
+                painter = painterResource(id = R.drawable.metacritic),
                 contentDescription = "Рейтинг",
                 modifier = Modifier.size(20.dp)
             )
@@ -175,21 +175,21 @@ fun MultimediaDetailScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Япония • ${multimedia.year}",
+            text = "США • ${game.year}",
             fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Издатель: Netflix",
+            text = "Издатель: Ubisoft",
             fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "Жанры: хоррор, комендия, хентай",
+            text = "Жанры: шутер, рпг, песочница",
             fontSize = 20.sp
         )
 
@@ -200,10 +200,10 @@ fun MultimediaDetailScreen(
             fontWeight = FontWeight.Bold,
             fontSize = 22.sp
         )
-
         Text(
-            text = multimedia.description,
+            text = game.description,
             fontSize = 20.sp
         )
+       
     }
 }

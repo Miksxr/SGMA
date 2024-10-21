@@ -1,4 +1,4 @@
-package com.example.sgma.presentation.ui
+package com.example.sgma.presentation.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,8 +33,13 @@ import com.example.sgma.R
 fun LoginScreen(
     email: String,
     onEmailChange: (String) -> Unit,
+    password: String,
+    onPasswordChange: (String) -> Unit,
     navController: NavController,
 ) {
+    var emailState by remember { mutableStateOf(email) }
+    var passwordState by remember { mutableStateOf(password) }
+
     Column {
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -55,9 +64,12 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = onEmailChange,
-            placeholder = { Text(text = "Email", fontSize = 18.sp) },
+            value = emailState,
+            onValueChange = {
+                emailState = it
+                onEmailChange(it)
+            },
+            label = { Text(text = "Email", fontSize = 18.sp) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 0.dp),
@@ -68,9 +80,12 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = onEmailChange,
-            placeholder = { Text(text = "Пароль", fontSize = 18.sp) },
+            value = passwordState,
+            onValueChange = {
+                passwordState = it
+                onPasswordChange(it)
+            },
+            label = { Text(text = "Пароль", fontSize = 18.sp) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 0.dp),
@@ -81,12 +96,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { /* Обработка нажатия на "входа" */ },
+            onClick = { navController.navigate("main") },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
-                .align(Alignment.CenterHorizontally)
         ) {
             Text(
                 text = "Войти",
@@ -102,7 +116,6 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
-                .align(Alignment.CenterHorizontally)
         ) {
             Text(
                 text = "Зарегистрироваться",
