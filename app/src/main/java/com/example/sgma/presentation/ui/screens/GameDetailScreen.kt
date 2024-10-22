@@ -18,6 +18,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,20 +44,18 @@ import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 fun GameDetailScreen(
     game: Game,
     navController: NavController,
-    viewModel : LocalMediaViewModel,
+    viewModel: LocalMediaViewModel,
     context: Context
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
-        val inCollectionState = remember {
-            mutableStateOf(false)
+        val inCollectionState = remember { mutableStateOf(false) }
+        val statusType = remember { mutableStateOf(game.statusType) }
+        val ratingState = remember { mutableStateOf(50f) }
+
+        viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
+            Log.d("LOG", inDBState.toString())
+            inCollectionState.value = inDBState
         }
-        val statusType = remember {
-            mutableStateOf(game.statusType)
-        }
-        viewModel.inDB.observe(context as LifecycleOwner, {
-            Log.d("LOG", it.toString())
-            inCollectionState.value = it
-        })
 
         viewModel.checkMediaInDB(game.id)
 
@@ -98,52 +97,77 @@ fun GameDetailScreen(
             StatusType.HaventPlayed.name,
             StatusType.InPlans.name,
             StatusType.None.name
+        )
+
+        Button(onClick = {
+            expanded = !expanded
+            viewModel.checkMediaInDB(game.id)
+        }) {
+            Text(statusType.value.name)
+
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = null,
             )
+        }
 
-        Column {
-            Button(onClick = {
-                expanded = !expanded
-                viewModel.checkMediaInDB(game.id)
-            }) {
-                Text(statusType.value.name)
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = null,
-                )
-            }
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                suggestions.forEach { label ->
-                    DropdownMenuItem(text = {
-                        Text(label)
-                    }, onClick = {
-
-                        statusType.value = StatusType.valueOf(label)
-                        val media = Media(
-                            id = game.id,
-                            name = game.name,
-                            image = game.image,
-                            year = game.year,
-                            sgmaRating = game.sgmaRating,
-                            anotherRating = game.metacritic,
-                            type = ContentTypes.Game,
-                            statusType = StatusType.valueOf(label)
-                        )
-                        if (label == StatusType.None.name && inCollectionState.value) {
-                            viewModel.deleteMedia(media)
-                        } else if (inCollectionState.value) {
-                            viewModel.updateStatusType(StatusType.valueOf(label), game.id)
-                        } else {
-                            viewModel.insertMedia(media)
-                        }
-                        expanded = false
-                    })
-                }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            suggestions.forEach { label ->
+                DropdownMenuItem(text = {
+                    Text(label)
+                }, onClick = {
+                    statusType.value = StatusType.valueOf(label)
+                    val media = Media(
+                        id = game.id,
+                        name = game.name,
+                        image = game.image,
+                        year = game.year,
+                        sgmaRating = game.sgmaRating,
+                        anotherRating = game.metacritic,
+                        type = ContentTypes.Game,
+                        statusType = StatusType.valueOf(label)
+                    )
+                    if (label == StatusType.None.name && inCollectionState.value) {
+                        viewModel.deleteMedia(media)
+                    } else if (inCollectionState.value) {
+                        viewModel.updateStatusType(StatusType.valueOf(label), game.id)
+                    } else {
+                        viewModel.insertMedia(media)
+                    }
+                    expanded = false
+                })
             }
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row {
+            Text(
+                text = "Оцените игру (1-100): ${ratingState.value.toInt()}",
+                fontSize = 20.sp
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.sigma),
+                contentDescription = "Рейтинг",
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Slider(
+            value = ratingState.value,
+            onValueChange = { ratingState.value = it },
+            valueRange = 1f..100f,
+            steps = 98,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -204,6 +228,6 @@ fun GameDetailScreen(
             text = game.description,
             fontSize = 20.sp
         )
-       
+
     }
 }
