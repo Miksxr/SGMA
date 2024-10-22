@@ -1,5 +1,8 @@
 package com.example.sgma.presentation
 
+import android.content.Intent
+import android.content.IntentFilter
+import android.net.Network
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.rememberNavController
 import com.example.sgma.R
 import com.example.sgma.data.datasource.remote.accounts.RemoteAccountDatasourceImpl
+import com.example.sgma.domain.ConnectivityReceiver
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.Statistic
@@ -40,7 +44,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             SGMATheme {
                 val navController = rememberNavController()
-                profileViewModel.getAccountData("acc3")
                 Scaffold(
                     bottomBar = { Navigation(navController = navController) }
                 ) {
@@ -48,6 +51,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        this.registerReceiver(
+            ConnectivityReceiver(),
+            IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
+        )
 
             // registration example
 //        profileViewModel.registerAccount(Profile(
