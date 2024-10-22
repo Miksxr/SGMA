@@ -82,7 +82,7 @@ fun SettingsScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(text = "Версия 0.0.1 Beta", modifier = Modifier.clickable {
                 versionClickCount++
