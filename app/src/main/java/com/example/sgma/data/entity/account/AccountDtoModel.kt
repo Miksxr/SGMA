@@ -1,5 +1,7 @@
 package com.example.sgma.data.entity.account
 
+import com.example.sgma.R
+
 data class AccountDtoModel(
     val name: String,
     val image: Int,
@@ -12,13 +14,11 @@ data class AccountDtoModel(
 ) {
     constructor() : this(
         name = "",
-        image = 12,
+        image = R.drawable.icon_profile,
         description = "",
         comments = emptyList(),
         friends = emptyList(),
-        statistic = StatisticDtoModel(
-            12,12,12,12
-        ),
+        statistic = StatisticDtoModel(),
         password = "???",
         login = ""
     )
