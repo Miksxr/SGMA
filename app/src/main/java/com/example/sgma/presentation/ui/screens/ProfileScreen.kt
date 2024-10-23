@@ -108,7 +108,6 @@ fun ProfileScreen(
                     .clip(CircleShape)
                     .align(Alignment.CenterHorizontally),
                 contentScale = ContentScale.Crop,
-
                 )
 
             Text(

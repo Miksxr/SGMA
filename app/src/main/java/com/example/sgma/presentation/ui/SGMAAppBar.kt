@@ -52,7 +52,7 @@ fun SGMAAppBar(
                 modifier = Modifier.weight(1f)
             )
 
-            IconButton(onClick = { navController.navigate("Настройки") }) {
+            IconButton(onClick = { navController.navigate("settings") }) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_settings),
                     contentDescription = "Настройки",

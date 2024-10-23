@@ -9,11 +9,12 @@ import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
-import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
-import com.example.sgma.presentation.ui.GameDetailScreen
+import com.example.sgma.presentation.ui.screens.RegistrationScreen
+import com.example.sgma.presentation.ui.screens.GameDetailScreen
+import com.example.sgma.presentation.ui.screens.LoginScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
-import com.example.sgma.presentation.ui.MultimediaDetailScreen
-import com.example.sgma.presentation.ui.SettingsScreen
+import com.example.sgma.presentation.ui.screens.MultimediaDetailScreen
+import com.example.sgma.presentation.ui.screens.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
@@ -22,30 +23,44 @@ import com.example.sgma.presentation.ui.screens.RibbonScreen
 fun CombinedGraph(
     navController: NavHostController,
     viewModel: LocalMediaViewModel,
-    profileViewModel: ProfileViewModel,
-    context : Context
+    context: Context
 ) {
     val mediaList = getFakeMediaList()
 
-    NavHost(navController = navController, startDestination = "Главная") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(
+                email = "",
+                onEmailChange = {},
+                password = "",
+                onPasswordChange = {},
+                navController = navController
+            )
+        }
+        composable("registration") {
+            RegistrationScreen(
+                email = "",
+                onEmailChange = {},
+                navController = navController
+            )
+        }
 
-        composable("Главная") {
+        composable("main") {
             MainScreen(navController = navController)
         }
-        composable("Лента") {
+        composable("ribbon") {
             RibbonScreen(navController = navController)
         }
-        composable("Профиль") {
-            ProfileScreen(navController = navController, profileViewModel, context)
+        composable("profile") {
+            ProfileScreen(navController = navController)
         }
-
-        composable("Настройки") {
+        composable("settings") {
             SettingsScreen(navController = navController)
         }
-
         composable("media_list") {
             MainScreen(navController = navController)
         }
+
         composable("game_detail/{gameId}") { backStackEntry ->
             val gameId = backStackEntry.arguments?.getString("gameId")?.toIntOrNull()
             val game = mediaList.find { it.id == gameId && it.type == ContentTypes.Game }
@@ -62,8 +77,8 @@ fun CombinedGraph(
                         description = "Описание для игры ${it.name}"
                     ),
                     navController = navController,
-                    viewModel,
-                    context
+                    viewModel = viewModel,
+                    context = context
                 )
             }
         }
@@ -83,8 +98,8 @@ fun CombinedGraph(
                         description = "Описание для мультимедия ${it.name}"
                     ),
                     navController = navController,
-                    viewModel,
-                    context
+                    viewModel = viewModel,
+                    context = context
                 )
             }
         }
