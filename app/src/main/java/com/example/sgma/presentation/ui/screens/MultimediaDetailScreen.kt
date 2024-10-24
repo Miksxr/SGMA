@@ -3,7 +3,6 @@ package com.example.sgma.presentation.ui.screens
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +37,7 @@ import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.Media
+import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 
 @Composable

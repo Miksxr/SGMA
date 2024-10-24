@@ -16,8 +16,7 @@ class ConnectivityReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        private var _internetConnection : Boolean = false
-        val internetConnection = _internetConnection
+        var isInternetConnect : Boolean = false
 
         fun checkInternetConnection(context: Context) {
             val connectivityManager =
@@ -28,11 +27,11 @@ class ConnectivityReceiver : BroadcastReceiver() {
 
             connectivityManager.registerNetworkCallback(request, object : NetworkCallback() {
                 override fun onAvailable(network: Network) {
-                    _internetConnection = true
+                    isInternetConnect = true
                 }
 
                 override fun onUnavailable() {
-                    _internetConnection = false
+                    isInternetConnect = false
                 }
             })
         }
