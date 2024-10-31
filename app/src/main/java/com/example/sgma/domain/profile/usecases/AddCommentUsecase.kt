@@ -1,6 +1,6 @@
 package com.example.sgma.domain.profile.usecases
 
-import com.example.sgma.domain.profile.Comment
+import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.profile.ProfileRepository
 import javax.inject.Inject
 

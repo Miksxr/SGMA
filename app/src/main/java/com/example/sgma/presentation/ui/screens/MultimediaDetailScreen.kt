@@ -34,11 +34,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
+import com.example.sgma.data.datasource.remote.comment.RemoteCommentDatasourceImpl
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.data.entity.StatusType
+import com.example.sgma.data.entity.account.CommentsDtoModel
 import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun MultimediaDetailScreen(

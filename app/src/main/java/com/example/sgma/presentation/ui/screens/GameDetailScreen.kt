@@ -2,8 +2,11 @@ package com.example.sgma.presentation.ui.screens
 
 import android.content.Context
 import android.util.Log
+import android.widget.ProgressBar
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +15,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,28 +48,57 @@ import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
 import com.example.sgma.domain.media.Media
 import com.example.sgma.data.entity.StatusType
+import com.example.sgma.domain.comment.Comment
+import com.example.sgma.domain.comment.CommentItem
+import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
+import com.example.sgma.presentation.ui.CommentCard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Composable
 fun GameDetailScreen(
     game: Game,
     navController: NavController,
     viewModel: LocalMediaViewModel,
+    commentsViewModel: CommentViewModel,
+    profileViewModel: ProfileViewModel,
     context: Context
 ) {
+    commentsViewModel.getComments(game.id)
+    val statusType = remember { mutableStateOf(game.statusType) }
+    val ratingState = remember { mutableStateOf(50f) }
+    val inCollectionState = remember { mutableStateOf(false) }
+    var commentsItem  = remember { mutableStateOf(mutableListOf<CommentItem>()) }
+
+    viewModel.checkMediaInDB(game.id)
+
+    viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
+        inCollectionState.value = inDBState
+    }
+
     LazyColumn(modifier = Modifier.padding(16.dp)) {
-        item {
-            val inCollectionState = remember { mutableStateOf(false) }
-            val statusType = remember { mutableStateOf(game.statusType) }
-            val ratingState = remember { mutableStateOf(50f) }
-
-            viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
-                Log.d("LOG", inDBState.toString())
-                inCollectionState.value = inDBState
+        CoroutineScope(Dispatchers.IO).launch {
+            commentsViewModel.comments.collect { items ->
+                commentsItem.value.clear()
+                for (comment in items) {
+                    profileViewModel.getAccountData(comment.accountName)
+                    commentsItem.value.add(
+                        CommentItem(
+                            comment = comment,
+                            profile = profileViewModel.account.value!!
+                        )
+                    )
+                }
             }
+        }
 
-            viewModel.checkMediaInDB(game.id)
-
+        item {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_back),
@@ -230,6 +268,22 @@ fun GameDetailScreen(
                 text = game.description,
                 fontSize = 20.sp
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (commentsItem.value.size == 0) {
+                Box (
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+
+
+        itemsIndexed(commentsItem.value) { index, item ->
+            CommentCard(item.profile, item.comment, navController)
         }
     }
 }

@@ -1,12 +1,9 @@
 package com.example.sgma.domain.profile.viewmodel
 
-import androidx.compose.runtime.key
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import coil3.network.ConnectivityChecker
-import com.example.sgma.domain.ConnectivityReceiver
-import com.example.sgma.domain.profile.Comment
+import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.usecases.AddCommentUsecase
 import com.example.sgma.domain.profile.usecases.AddFriendUsecase
@@ -20,8 +17,6 @@ import com.example.sgma.domain.profile.usecases.RegisterAccountUsecase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 
 class ProfileViewModel(
     private val commentAddUsecase: AddCommentUsecase,

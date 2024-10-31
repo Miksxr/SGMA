@@ -1,4 +1,4 @@
-package com.example.sgma.domain.profile
+package com.example.sgma.domain.comment
 
 data class Comment(
     val filmId: Int,
