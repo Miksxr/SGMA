@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
@@ -57,9 +58,11 @@ import com.example.sgma.presentation.ui.CommentCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.Timer
 
 @Composable
 fun GameDetailScreen(
@@ -70,11 +73,10 @@ fun GameDetailScreen(
     profileViewModel: ProfileViewModel,
     context: Context
 ) {
-    commentsViewModel.getComments(game.id)
     val statusType = remember { mutableStateOf(game.statusType) }
     val ratingState = remember { mutableStateOf(50f) }
     val inCollectionState = remember { mutableStateOf(false) }
-    var commentsItem  = remember { mutableStateOf(mutableListOf<CommentItem>()) }
+    val commentsItem  = remember { mutableStateOf(listOf<CommentItem>()) }
 
     viewModel.checkMediaInDB(game.id)
 
@@ -85,20 +87,25 @@ fun GameDetailScreen(
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         CoroutineScope(Dispatchers.IO).launch {
             commentsViewModel.comments.collect { items ->
-                commentsItem.value.clear()
+                val list : MutableList<CommentItem> = mutableListOf()
                 for (comment in items) {
-                    profileViewModel.getAccountData(comment.accountName)
-                    commentsItem.value.add(
-                        CommentItem(
-                            comment = comment,
-                            profile = profileViewModel.account.value!!
+                    if (comment.filmId != -1) {
+                        profileViewModel.getAccountData(comment.accountName)
+                        delay(1000) // TODO: change wait profile data
+                        list.add(
+                            CommentItem(
+                                comment = comment,
+                                profile = profileViewModel.account.value!!
+                            )
                         )
-                    )
+                    }
                 }
+                commentsItem.value = list
             }
         }
 
         item {
+
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_back),
@@ -271,16 +278,36 @@ fun GameDetailScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (commentsItem.value.size == 0) {
-                Box (
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.BottomCenter
-                ) {
-                    CircularProgressIndicator()
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                var buttonVisible by remember { mutableStateOf(true) }
+                if (buttonVisible) {
+                    Button(
+                        onClick = {
+                            commentsViewModel.getComments(game.id)
+                            buttonVisible = !buttonVisible
+                        },
+                    ) {
+                        Text(text = "Загурзить комментарии",
+                            textAlign = TextAlign.Center)
+                    }
+                }
+                else {
+                    var tick = 0
+                    val time = 100
+                    if (commentsItem.value.size == 0) {
+                        while(tick < time) {
+                            tick++
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
             }
-        }
 
+
+        }
 
         itemsIndexed(commentsItem.value) { index, item ->
             CommentCard(item.profile, item.comment, navController)

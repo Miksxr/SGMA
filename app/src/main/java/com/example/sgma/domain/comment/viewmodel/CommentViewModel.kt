@@ -24,13 +24,13 @@ class CommentViewModel(
 
 
     fun getComments(filmId : Int) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             _comments.emit(getCommentsUsecase(filmId))
         }
     }
 
     fun addComments(filmId: Int, comment: Comment) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             addCommentsUsecase(filmId, comment)
         }
 //        val list = _comments.value?.toMutableList()

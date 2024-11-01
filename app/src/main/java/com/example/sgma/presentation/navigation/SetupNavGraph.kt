@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Game
 import com.example.sgma.data.entity.Multimedia
+import com.example.sgma.domain.comment.CommentItem
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.Profile
@@ -28,6 +29,9 @@ import com.example.sgma.presentation.ui.screens.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun CombinedGraph(
@@ -136,6 +140,8 @@ fun CombinedGraph(
                     ),
                     navController = navController,
                     viewModel = localMediaViewModel,
+                    commentsViewModel = commentViewModel,
+                    profileViewModel = profileViewModel,
                     context = context
                 )
             }
