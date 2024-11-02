@@ -50,6 +50,7 @@ import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.CommentCard
+import com.example.sgma.presentation.ui.CommentEntryCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -68,7 +69,6 @@ fun MultimediaDetailScreen(
     val commentsItem = remember { mutableStateOf(listOf<CommentItem>()) }
     val inCollectionState = remember { mutableStateOf(false) }
     val statusType = remember { mutableStateOf(multimedia.statusType) }
-    val ratingState = remember { mutableStateOf(50f) }
 
 
     viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
@@ -181,31 +181,6 @@ fun MultimediaDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row {
-                Text(
-                    text = "Оцените мультимедиа (1-100): ${ratingState.value.toInt()}",
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.sigma),
-                    contentDescription = "Рейтинг",
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Slider(
-                value = ratingState.value,
-                onValueChange = { ratingState.value = it },
-                valueRange = 1f..100f,
-                steps = 98,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "${multimedia.sgmaRating}", fontSize = 20.sp)
                 Spacer(modifier = Modifier.width(4.dp))
@@ -257,6 +232,10 @@ fun MultimediaDetailScreen(
                 text = multimedia.description,
                 fontSize = 20.sp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CommentEntryCard(commentsViewModel, multimedia.id)
 
             Spacer(modifier = Modifier.height(16.dp))
 

@@ -13,6 +13,7 @@ import com.example.sgma.data.datasource.remote.comment.RemoteCommentDatasourceIm
 import com.example.sgma.domain.ConnectivityReceiver
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.CombinedGraph
 import com.example.sgma.presentation.ui.theme.SGMATheme
@@ -61,6 +62,7 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         var userAccountLogin = ""
+        lateinit var userProfile : Profile
     }
 
 }

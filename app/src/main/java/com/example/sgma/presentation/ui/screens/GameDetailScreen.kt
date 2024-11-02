@@ -55,6 +55,7 @@ import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.CommentCard
+import com.example.sgma.presentation.ui.CommentEntryCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -74,7 +75,6 @@ fun GameDetailScreen(
     context: Context
 ) {
     val statusType = remember { mutableStateOf(game.statusType) }
-    val ratingState = remember { mutableStateOf(50f) }
     val inCollectionState = remember { mutableStateOf(false) }
     val commentsItem  = remember { mutableStateOf(listOf<CommentItem>()) }
 
@@ -191,33 +191,6 @@ fun GameDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row {
-                Text(
-                    text = "Оцените игру (1-100): ${ratingState.value.toInt()}",
-                    fontSize = 18.sp
-                )
-
-                Spacer(modifier = Modifier.width(4.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.sigma),
-                    contentDescription = "Рейтинг",
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Slider(
-                value = ratingState.value,
-                onValueChange = { ratingState.value = it },
-                valueRange = 1f..100f,
-                steps = 98,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Text(text = "${game.sgmaRating}", fontSize = 20.sp)
@@ -275,6 +248,13 @@ fun GameDetailScreen(
                 text = game.description,
                 fontSize = 20.sp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CommentEntryCard(commentsViewModel, game.id)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

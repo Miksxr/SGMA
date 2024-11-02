@@ -43,8 +43,6 @@ fun CombinedGraph(
 ) {
     val mediaList = getFakeMediaList()
 
-    var userProfile = profileViewModel.account.value
-
     var profile by remember {
         mutableStateOf(profileViewModel.account.value)
     }
@@ -53,7 +51,7 @@ fun CombinedGraph(
         profile = it
         if (it.login == MainActivity.userAccountLogin) // if user login
         {
-            userProfile = it
+            MainActivity.userProfile = it
         }
     })
 
@@ -91,7 +89,7 @@ fun CombinedGraph(
             RibbonScreen(navController = navController)
         }
         composable("profile") {
-            ProfileScreen(navController = navController, userProfile)
+            ProfileScreen(navController = navController, MainActivity.userProfile)
         }
         composable("settings") {
             SettingsScreen(navController = navController)
