@@ -3,6 +3,7 @@ package com.example.sgma.presentation.ui.screens
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -29,36 +32,73 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.sgma.R
+import com.example.sgma.data.datasource.remote.comment.RemoteCommentDatasourceImpl
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.Multimedia
 import com.example.sgma.data.entity.StatusType
+import com.example.sgma.data.entity.account.CommentsDtoModel
+import com.example.sgma.domain.comment.CommentItem
+import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
+import com.example.sgma.presentation.ui.CommentCard
+import com.example.sgma.presentation.ui.CommentEntryCard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 @Composable
 fun MultimediaDetailScreen(
     multimedia: Multimedia,
     navController: NavController,
     viewModel: LocalMediaViewModel,
+    commentsViewModel: CommentViewModel,
+    profileViewModel : ProfileViewModel,
     context: Context
 ) {
+    val commentsItem = remember { mutableStateOf(listOf<CommentItem>()) }
+    val inCollectionState = remember { mutableStateOf(false) }
+    val statusType = remember { mutableStateOf(multimedia.statusType) }
+
+
+    viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
+        Log.d("LOG", inDBState.toString())
+        inCollectionState.value = inDBState
+    }
+
+    viewModel.checkMediaInDB(multimedia.id)
+
     LazyColumn(modifier = Modifier.padding(16.dp)) {
-        item {
-            val inCollectionState = remember { mutableStateOf(false) }
-            val statusType = remember { mutableStateOf(multimedia.statusType) }
-            val ratingState = remember { mutableStateOf(50f) }
-
-            viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
-                Log.d("LOG", inDBState.toString())
-                inCollectionState.value = inDBState
+        CoroutineScope(Dispatchers.IO).launch {
+            commentsViewModel.comments.collect { items ->
+                val list: MutableList<CommentItem> = mutableListOf()
+                for (comment in items) {
+                    if (comment.filmId != -1) {
+                        profileViewModel.getAccountData(comment.accountName)
+                        delay(1000) // TODO: change wait profile data
+                        list.add(
+                            CommentItem(
+                                comment = comment,
+                                profile = profileViewModel.account.value!!
+                            )
+                        )
+                    }
+                }
+                commentsItem.value = list
             }
-            viewModel.checkMediaInDB(multimedia.id)
+        }
 
+        item {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_back),
@@ -141,31 +181,6 @@ fun MultimediaDetailScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row {
-                Text(
-                    text = "Оцените мультимедиа (1-100): ${ratingState.value.toInt()}",
-                    fontSize = 18.sp
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.sigma),
-                    contentDescription = "Рейтинг",
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Slider(
-                value = ratingState.value,
-                onValueChange = { ratingState.value = it },
-                valueRange = 1f..100f,
-                steps = 98,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "${multimedia.sgmaRating}", fontSize = 20.sp)
                 Spacer(modifier = Modifier.width(4.dp))
@@ -217,6 +232,39 @@ fun MultimediaDetailScreen(
                 text = multimedia.description,
                 fontSize = 20.sp
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CommentEntryCard(commentsViewModel, multimedia.id)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box (
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                var buttonVisible by remember { mutableStateOf(true) }
+                if (buttonVisible) {
+                    Button(
+                        onClick = {
+                            commentsViewModel.getComments(multimedia.id)
+                            buttonVisible = !buttonVisible
+                        },
+                    ) {
+                        Text(text = "Загурзить комментарии",
+                            textAlign = TextAlign.Center)
+                    }
+                }
+                else {
+                    if (commentsItem.value.size == 0) {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+        }
+
+        itemsIndexed(commentsItem.value) { index, item ->
+            CommentCard(item.profile, item.comment, navController)
         }
     }
 }

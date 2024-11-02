@@ -1,9 +1,9 @@
 package com.example.sgma.data.entity.account
 
 data class CommentsDtoModel(
-    val filmId: Int,
+    val film_id: Int,
     val sgma_rating: Double,
-    val accountName: String,
+    val account_name: String,
     val comment: String
 ) {
     constructor() : this(

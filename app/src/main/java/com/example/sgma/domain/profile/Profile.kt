@@ -1,5 +1,7 @@
 package com.example.sgma.domain.profile
 
+import com.example.sgma.domain.comment.Comment
+
 data class Profile(
     var name: String,
     var image: Int,

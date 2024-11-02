@@ -2,7 +2,7 @@ package com.example.sgma.data.repository
 
 import com.example.sgma.data.datasource.remote.accounts.RemoteAccountDatasource
 import com.example.sgma.data.mapper.accounts.ProfileMapper
-import com.example.sgma.domain.profile.Comment
+import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.ProfileRepository
 

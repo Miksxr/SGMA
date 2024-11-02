@@ -59,26 +59,9 @@ import com.example.sgma.presentation.ui.getFakeNewsList
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    profileViewModel: ProfileViewModel,
-    context: Context
+    profile: Profile?
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    var profile by remember {
-        mutableStateOf(profileViewModel.account.value)
-    }
-
-    profileViewModel.account.observe(context as LifecycleOwner, {
-        profile = it
-    })
-
-    profileViewModel.lastActionResult.observe(context as LifecycleOwner, {
-        if (it) {
-            profileViewModel.getAccountData(profile?.login ?: "")
-        }
-        else {
-            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-        }
-    })
 
     Scaffold(
         topBar = {
