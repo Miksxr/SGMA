@@ -11,7 +11,7 @@ class MediaDBModelMapper {
         return Media (
             id = mediaDBModel?.id ?: -1,
             name = mediaDBModel?.name ?: "",
-            image = mediaDBModel?.image ?: -1,
+            image = mediaDBModel?.image ?: "",
             year = mediaDBModel?.year ?: -1,
             sgmaRating = mediaDBModel?.sgmaRating ?: -1.0,
             anotherRating = mediaDBModel?.sgmaRating ?: -1.0,
@@ -29,7 +29,7 @@ class MediaDBModelMapper {
             sgmaRating = media.sgmaRating,
             anotherRating = media.anotherRating,
             type = media.type.name,
-            statusType = media.statusType.name
+            statusType = media.statusType!!.name
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.example.sgma.data.datasource.remote.comment
 
+import android.util.Log
 import com.example.sgma.data.datasource.remote.CollectionNames
 import com.example.sgma.data.datasource.remote.Firestore
 import com.example.sgma.data.entity.account.CommentsDtoModel
@@ -8,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 
 class RemoteCommentDatasourceImpl : RemoteCommentDatasource {
 
-    private val db : Firestore
+    private val db: Firestore
 
     init {
         db = Firestore(CollectionNames.comments)
@@ -21,6 +22,11 @@ class RemoteCommentDatasourceImpl : RemoteCommentDatasource {
 
     override suspend fun addComment(filmId: Int, comment: CommentsDtoModel) : Boolean {
         val documentRef = db.findDocument(filmId.toString())
+        if (!documentRef.get().isSuccessful) {
+            documentRef.set(mapOf(
+                "created" to true
+            ))
+        }
         return try {
             val documentSnapshot = documentRef.get().await()
             val comments = documentSnapshot.get("comments") as? List<CommentsDtoModel> ?: emptyList()

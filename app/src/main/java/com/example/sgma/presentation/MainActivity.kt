@@ -10,9 +10,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.sgma.R
 import com.example.sgma.data.datasource.remote.comment.RemoteCommentDatasourceImpl
+import com.example.sgma.data.datasource.remote.multimedia.RemoteDatasourceMultimediaImpl
 import com.example.sgma.domain.ConnectivityReceiver
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.CombinedGraph
@@ -35,6 +37,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var commentViewModel: CommentViewModel
 
+    @Inject
+    lateinit var multimediaViewModel: MultimediaViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ConnectivityReceiver.checkInternetConnection(this@MainActivity)
@@ -54,6 +59,7 @@ class MainActivity : ComponentActivity() {
                     localMediaViewModel = localMediaViewModel,
                     profileViewModel = profileViewModel,
                     commentViewModel = commentViewModel,
+                    multimediaViewModel = multimediaViewModel,
                     context = this@MainActivity
                 )
             }

@@ -1,16 +1,16 @@
-package com.example.sgma.domain.media.viemodel
+package com.example.sgma.domain.media.local.viemodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.media.Media
-import com.example.sgma.domain.media.usecases.CheckMediaInDBUsecase
-import com.example.sgma.domain.media.usecases.DeleteMediaUsecase
-import com.example.sgma.domain.media.usecases.GetAllMediaUsecase
-import com.example.sgma.domain.media.usecases.InsertMediaUsecase
-import com.example.sgma.domain.media.usecases.SelectByTypeUsecase
-import com.example.sgma.domain.media.usecases.UpdateStatusTypeUsecase
+import com.example.sgma.domain.media.local.usecases.CheckMediaInDBUsecase
+import com.example.sgma.domain.media.local.usecases.DeleteMediaUsecase
+import com.example.sgma.domain.media.local.usecases.GetAllMediaUsecase
+import com.example.sgma.domain.media.local.usecases.InsertMediaUsecase
+import com.example.sgma.domain.media.local.usecases.SelectByTypeUsecase
+import com.example.sgma.domain.media.local.usecases.UpdateStatusTypeUsecase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

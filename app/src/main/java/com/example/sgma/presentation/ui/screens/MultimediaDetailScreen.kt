@@ -21,7 +21,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,18 +35,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import coil3.compose.rememberAsyncImagePainter
 import com.example.sgma.R
-import com.example.sgma.data.datasource.remote.comment.RemoteCommentDatasourceImpl
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Multimedia
+import com.example.sgma.domain.media.remote.multimedia.Multimedia
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.data.entity.account.CommentsDtoModel
 import com.example.sgma.domain.comment.CommentItem
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.Media
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.CommentCard
 import com.example.sgma.presentation.ui.CommentEntryCard
@@ -55,7 +52,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 
 @Composable
 fun MultimediaDetailScreen(
@@ -79,24 +75,21 @@ fun MultimediaDetailScreen(
     viewModel.checkMediaInDB(multimedia.id)
 
     LazyColumn(modifier = Modifier.padding(16.dp)) {
-        CoroutineScope(Dispatchers.IO).launch {
-            commentsViewModel.comments.collect { items ->
-                val list: MutableList<CommentItem> = mutableListOf()
-                for (comment in items) {
-                    if (comment.filmId != -1) {
-                        profileViewModel.getAccountData(comment.accountName)
-                        delay(1000) // TODO: change wait profile data
-                        list.add(
-                            CommentItem(
-                                comment = comment,
-                                profile = profileViewModel.account.value!!
-                            )
+        commentsViewModel.comments.observe(context, { items ->
+            val list: MutableList<CommentItem> = mutableListOf()
+            for (comment in items) {
+                if (comment.filmId != -1) {
+                    profileViewModel.getAccountData(comment.accountName)// TODO: wait account loading
+                    list.add(
+                        CommentItem(
+                            comment = comment,
+                            profile = profileViewModel.account.value!!
                         )
-                    }
+                    )
                 }
-                commentsItem.value = list
             }
-        }
+            commentsItem.value = list
+        })
 
         item {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -110,7 +103,7 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Image(
-                painter = painterResource(id = multimedia.image),
+                painter = rememberAsyncImagePainter(multimedia.image),
                 contentDescription = multimedia.nameRu,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -141,7 +134,7 @@ fun MultimediaDetailScreen(
                 expanded = !expanded
                 viewModel.checkMediaInDB(multimedia.id)
             }) {
-                Text(statusType.value.name)
+                Text(statusType.value!!.name)
                 Icon(
                     imageVector = Icons.Filled.ArrowDropDown,
                     contentDescription = null,
@@ -163,7 +156,7 @@ fun MultimediaDetailScreen(
                             image = multimedia.image,
                             year = multimedia.year,
                             sgmaRating = multimedia.sgmaRating,
-                            anotherRating = multimedia.kinopoiskReting,
+                            anotherRating = multimedia.kinopoiskRating,
                             type = ContentTypes.Game,
                             statusType = StatusType.valueOf(label)
                         )
@@ -190,7 +183,7 @@ fun MultimediaDetailScreen(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(text = "${multimedia.kinopoiskReting}", fontSize = 20.sp)
+                Text(text = "${multimedia.kinopoiskRating}", fontSize = 20.sp)
                 Spacer(modifier = Modifier.width(4.dp))
                 Image(
                     painter = painterResource(id = R.drawable.kinopoisk),
@@ -202,7 +195,7 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Япония • ${multimedia.year}",
+                text = "${multimedia.countries} • ${multimedia.year}",
                 fontSize = 20.sp
             )
 
@@ -216,7 +209,7 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Жанры: хоррор, комендия, хентай",
+                text = "Жанры: ${multimedia.genres}",
                 fontSize = 20.sp
             )
 

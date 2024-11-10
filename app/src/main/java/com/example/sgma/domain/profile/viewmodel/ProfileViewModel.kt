@@ -3,6 +3,7 @@ package com.example.sgma.domain.profile.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.usecases.AddCommentUsecase
@@ -37,14 +38,14 @@ class ProfileViewModel(
     val lastActionResult : LiveData<Boolean> = _lastActionResult
 
     fun getAccountData(name : String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _account.postValue(getAccountUsecase(name))
+        viewModelScope.launch {
+            _account.value = getAccountUsecase(name)
         }
     }
 
     fun updateAccountName(name: String, account : String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(changeNameUsecase(name, account))
+        viewModelScope.launch {
+            _lastActionResult.value = changeNameUsecase(name, account)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -54,8 +55,8 @@ class ProfileViewModel(
     }
 
     fun updateAccountImage(idImage: Int, account : String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(changeImageUsecase(idImage, account))
+        viewModelScope.launch {
+            _lastActionResult.value = changeImageUsecase(idImage, account)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -65,8 +66,8 @@ class ProfileViewModel(
     }
 
     fun updateAccountDescription(description: String, account : String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(changeDescriptionUsecase(description, account))
+        viewModelScope.launch {
+            _lastActionResult.value = changeDescriptionUsecase(description, account)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -76,8 +77,8 @@ class ProfileViewModel(
     }
 
     fun addComment(comment: Comment, accName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(commentAddUsecase(comment, accName))
+        viewModelScope.launch {
+            _lastActionResult.value = commentAddUsecase(comment, accName)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -89,8 +90,8 @@ class ProfileViewModel(
     }
 
     fun deleteComment(comment: Comment, accName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(commentDeleteUsecase(comment, accName))
+        viewModelScope.launch {
+            _lastActionResult.value = commentDeleteUsecase(comment, accName)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -102,8 +103,8 @@ class ProfileViewModel(
     }
 
     fun addFriend(friendAcc : String, accName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(friendAddUsecase(friendAcc, accName))
+        viewModelScope.launch {
+            _lastActionResult.value = friendAddUsecase(friendAcc, accName)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -115,8 +116,8 @@ class ProfileViewModel(
     }
 
     fun deleteFriend(friendAcc : String, accName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(friendDeleteUsecase(friendAcc, accName))
+        viewModelScope.launch {
+            _lastActionResult.value = friendDeleteUsecase(friendAcc, accName)
         }
         val tempAcc = _account.value ?: null
         if (tempAcc != null) {
@@ -128,8 +129,8 @@ class ProfileViewModel(
     }
 
     fun registerAccount(account : Profile) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _lastActionResult.postValue(registerAccountUsecase(account))
+        viewModelScope.launch {
+            _lastActionResult.value = registerAccountUsecase(account)
         }
     }
 

@@ -4,7 +4,7 @@ import com.example.sgma.data.datasource.local.LocalDatasource
 import com.example.sgma.data.entity.StatusType
 import com.example.sgma.data.mapper.MediaDBModelMapper
 import com.example.sgma.domain.media.Media
-import com.example.sgma.domain.media.LocalMediaRepository
+import com.example.sgma.domain.media.local.LocalMediaRepository
 import javax.inject.Inject
 
 class LocalMediaRepositoryImpl @Inject constructor(

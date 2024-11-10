@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.rememberAsyncImagePainter
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.domain.media.Media
@@ -45,7 +46,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                     .height(130.dp)
             ) {
                 Image(
-                    painter = painterResource(id = mediaDBModel.image),
+                    painter = rememberAsyncImagePainter(mediaDBModel.image),
                     contentDescription = mediaDBModel.name,
                     modifier = Modifier.fillMaxSize()
                 )

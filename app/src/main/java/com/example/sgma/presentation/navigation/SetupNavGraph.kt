@@ -1,6 +1,7 @@
 package com.example.sgma.presentation.navigation
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,13 +12,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Game
-import com.example.sgma.data.entity.Multimedia
-import com.example.sgma.domain.comment.CommentItem
+import com.example.sgma.data.entity.StatusType
+import com.example.sgma.domain.media.remote.game.Game
+import com.example.sgma.domain.media.remote.multimedia.Multimedia
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
-import com.example.sgma.domain.profile.Profile
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.MainActivity
 import com.example.sgma.presentation.ui.screens.RegistrationScreen
@@ -29,9 +31,6 @@ import com.example.sgma.presentation.ui.screens.SettingsScreen
 import com.example.sgma.presentation.ui.getFakeMediaList
 import com.example.sgma.presentation.ui.screens.ProfileScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
 fun CombinedGraph(
@@ -39,6 +38,7 @@ fun CombinedGraph(
     localMediaViewModel: LocalMediaViewModel,
     profileViewModel: ProfileViewModel,
     commentViewModel: CommentViewModel,
+    multimediaViewModel : MultimediaViewModel,
     context: Context
 ) {
     val mediaList = getFakeMediaList()
@@ -83,7 +83,7 @@ fun CombinedGraph(
         }
 
         composable("main") {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, multimediaViewModel = multimediaViewModel)
         }
         composable("ribbon") {
             RibbonScreen(navController = navController)
@@ -95,7 +95,7 @@ fun CombinedGraph(
             SettingsScreen(navController = navController)
         }
         composable("media_list") {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, multimediaViewModel = multimediaViewModel)
         }
 
         composable("game_detail/{gameId}") { backStackEntry ->
@@ -106,11 +106,11 @@ fun CombinedGraph(
                     game = Game(
                         id = it.id,
                         name = it.name,
-                        image = it.image,
+                        image = R.drawable.kop ,//it.image ФЕЙК ФОТО из-за того что media сейчас содержит стринг
                         year = it.year,
                         sgmaRating = it.sgmaRating,
                         metacritic = it.anotherRating,
-                        statusType = it.statusType,
+                        statusType = it.statusType!!,
                         description = "Описание для игры ${it.name}"
                     ),
                     navController = navController,
@@ -122,19 +122,25 @@ fun CombinedGraph(
             }
         }
         composable("multimedia_detail/{mediaId}") { backStackEntry ->
-            val mediaId = backStackEntry.arguments?.getString("mediaId")?.toIntOrNull()
-            val multimedia = mediaList.find { it.id == mediaId && it.type != ContentTypes.Game }
-            multimedia?.let {
+            val mediaId = backStackEntry.arguments?.getString("mediaId")?.toInt()
+            multimediaViewModel.findMultimedia(mediaId!!)
+            val multimedia = remember { mutableStateOf(multimediaViewModel.multimedia.value) }
+            multimediaViewModel.multimedia.observe(context, {
+                multimedia.value = it
+            })
+            multimedia.value.also {
                 MultimediaDetailScreen(
                     multimedia = Multimedia(
-                        id = it.id,
-                        nameRu = it.name,
-                        image = it.image,
-                        year = it.year,
-                        sgmaRating = it.sgmaRating,
-                        kinopoiskReting = it.anotherRating,
-                        statusType = it.statusType,
-                        description = "Описание для мультимедия ${it.name}"
+                        id = it?.id ?: -1,
+                        nameRu = it?.nameRu ?: "",
+                        image = it?.image ?: "",
+                        year = it?.year ?: -1,
+                        sgmaRating = it?.sgmaRating ?: 0.0,
+                        kinopoiskRating = it?.kinopoiskRating ?: 0.0,
+                        description = it?.description ?: "",
+                        countries = it?.countries ?: "",
+                        genres = it?.genres ?: "",
+                        statusType = it?.statusType ?: StatusType.None
                     ),
                     navController = navController,
                     viewModel = localMediaViewModel,

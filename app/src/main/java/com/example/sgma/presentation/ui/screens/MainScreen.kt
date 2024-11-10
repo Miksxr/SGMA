@@ -39,14 +39,18 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
+import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.MediaCard
 import com.example.sgma.presentation.ui.SGMAAppBar
 import com.example.sgma.presentation.ui.getFakeMediaList
 
 @Composable
-fun MainScreen(navController: NavController) {
-    val mediaList = getFakeMediaList()
+fun MainScreen(
+    navController: NavController,
+    multimediaViewModel : MultimediaViewModel
+) {
+    val mediaList = multimediaViewModel.mediaList.value
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Все") }
     var selectedSortOption by remember { mutableStateOf("Самые популярные") }
@@ -102,7 +106,7 @@ fun MainScreen(navController: NavController) {
                     })
             }
 
-            val filteredList = mediaList.filter {
+            val filteredList = mediaList!!.filter {
                 (selectedCategory == "Все" || it.type.name == selectedCategory) && it.name.contains(
                     searchQuery, ignoreCase = true
                 )
@@ -118,12 +122,14 @@ fun MainScreen(navController: NavController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(filteredList) { media ->
-                    MediaCard(mediaDBModel = media, onClick = {
-                        when (media.type) {
-                            ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
-                            else -> navController.navigate("multimedia_detail/${media.id}")
-                        }
-                    })
+                    if (media.name != "") {
+                        MediaCard(mediaDBModel = media, onClick = {
+                            when (media.type) {
+                                ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
+                                else -> navController.navigate("multimedia_detail/${media.id}")
+                            }
+                        })
+                    }
                 }
             }
         }

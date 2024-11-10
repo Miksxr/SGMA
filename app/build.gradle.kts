@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {

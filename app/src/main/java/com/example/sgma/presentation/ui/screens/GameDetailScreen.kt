@@ -1,12 +1,8 @@
 package com.example.sgma.presentation.ui.screens
 
 import android.content.Context
-import android.util.Log
-import android.widget.ProgressBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,10 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
@@ -27,8 +20,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,24 +37,19 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Game
+import com.example.sgma.domain.media.remote.game.Game
 import com.example.sgma.domain.media.Media
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.comment.CommentItem
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.CommentCard
 import com.example.sgma.presentation.ui.CommentEntryCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.Timer
 
 @Composable
 fun GameDetailScreen(
@@ -85,24 +71,21 @@ fun GameDetailScreen(
     }
 
     LazyColumn(modifier = Modifier.padding(16.dp)) {
-        CoroutineScope(Dispatchers.IO).launch {
-            commentsViewModel.comments.collect { items ->
-                val list : MutableList<CommentItem> = mutableListOf()
-                for (comment in items) {
-                    if (comment.filmId != -1) {
-                        profileViewModel.getAccountData(comment.accountName)
-                        delay(1000) // TODO: change wait profile data
-                        list.add(
-                            CommentItem(
-                                comment = comment,
-                                profile = profileViewModel.account.value!!
-                            )
+        commentsViewModel.comments.observe(context, { items ->
+            val list: MutableList<CommentItem> = mutableListOf()
+            for (comment in items) {
+                if (comment.filmId != -1) {
+                    profileViewModel.getAccountData(comment.accountName)// TODO: wait account loading
+                    list.add(
+                        CommentItem(
+                            comment = comment,
+                            profile = profileViewModel.account.value!!
                         )
-                    }
+                    )
                 }
-                commentsItem.value = list
             }
-        }
+            commentsItem.value = list
+        })
 
         item {
 
@@ -170,7 +153,7 @@ fun GameDetailScreen(
                         val media = Media(
                             id = game.id,
                             name = game.name,
-                            image = game.image,
+                            image = "", //game.image
                             year = game.year,
                             sgmaRating = game.sgmaRating,
                             anotherRating = game.metacritic,

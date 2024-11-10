@@ -8,7 +8,7 @@ import com.example.sgma.data.entity.localmedia.MediaDBModel
 
 
 // локальная база данных для сохранения элементов помеченных пользователем
-@Database(entities = [MediaDBModel::class], version = 1)
+@Database(entities = [MediaDBModel::class], version = 2)
 abstract class MediaDatabase : RoomDatabase() {
 
     abstract fun getMediaItemDao() : MediaItemDao

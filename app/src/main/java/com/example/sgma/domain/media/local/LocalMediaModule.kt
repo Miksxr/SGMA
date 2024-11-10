@@ -1,17 +1,17 @@
-package com.example.sgma.domain.media
+package com.example.sgma.domain.media.local
 
 import android.content.Context
 import com.example.sgma.data.datasource.local.LocalDatasource
 import com.example.sgma.data.datasource.local.LocalDatasourceImpl
 import com.example.sgma.data.mapper.MediaDBModelMapper
 import com.example.sgma.data.repository.LocalMediaRepositoryImpl
-import com.example.sgma.domain.media.usecases.CheckMediaInDBUsecase
-import com.example.sgma.domain.media.usecases.DeleteMediaUsecase
-import com.example.sgma.domain.media.usecases.GetAllMediaUsecase
-import com.example.sgma.domain.media.usecases.InsertMediaUsecase
-import com.example.sgma.domain.media.usecases.SelectByTypeUsecase
-import com.example.sgma.domain.media.usecases.UpdateStatusTypeUsecase
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.usecases.CheckMediaInDBUsecase
+import com.example.sgma.domain.media.local.usecases.DeleteMediaUsecase
+import com.example.sgma.domain.media.local.usecases.GetAllMediaUsecase
+import com.example.sgma.domain.media.local.usecases.InsertMediaUsecase
+import com.example.sgma.domain.media.local.usecases.SelectByTypeUsecase
+import com.example.sgma.domain.media.local.usecases.UpdateStatusTypeUsecase
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

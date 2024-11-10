@@ -1,5 +1,6 @@
 package com.example.sgma.domain.comment.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,13 +20,13 @@ class CommentViewModel(
     private val addCommentsUsecase: AddCommentUsecase
 ) : ViewModel() {
 
-    private val _comments : MutableStateFlow<List<Comment>> = MutableStateFlow(emptyList())
-    val comments : StateFlow<List<Comment>> = _comments
+    private val _comments : MutableLiveData<List<Comment>> = MutableLiveData()
+    val comments : LiveData<List<Comment>> = _comments
 
 
     fun getComments(filmId : Int) {
         viewModelScope.launch {
-            _comments.emit(getCommentsUsecase(filmId))
+            _comments.value = getCommentsUsecase(filmId)
         }
     }
 
@@ -33,9 +34,9 @@ class CommentViewModel(
         viewModelScope.launch {
             addCommentsUsecase(filmId, comment)
         }
-//        val list = _comments.value?.toMutableList()
-//        list?.add(comment)
-//        _comments.value = list ?: emptyList()
+        val list = _comments.value?.toMutableList()
+        list?.add(comment)
+        _comments.value = list ?: emptyList()
     }
 
 }
