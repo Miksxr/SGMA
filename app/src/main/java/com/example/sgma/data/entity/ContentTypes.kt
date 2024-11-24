@@ -2,9 +2,12 @@ package com.example.sgma.data.entity
 
 // типы возможного контента в приложении служит для корректного мапинга к правильной сущности
 enum class ContentTypes {
-    Film,
+    FILM,
     Game,
     Anime,
     Serial,
-    Unknown
+    Unknown,
+    VIDEO,
+    TV_SERIES,
+    MINI_SERIES
 }

@@ -1,4 +1,6 @@
-package com.example.sgma.data.entity
+package com.example.sgma.domain.media.remote.game
+
+import com.example.sgma.data.entity.StatusType
 
 // на основе RAW
 // сущность которая отображается в полной версии страницы игры

@@ -1,7 +1,6 @@
 package com.example.sgma.domain.profile
 
-import android.media.tv.TvContract.Programs
-import com.example.sgma.data.entity.account.AccountDtoModel
+import com.example.sgma.domain.comment.Comment
 
 interface ProfileRepository {
     suspend fun changeImage(id: Int, accountName: String) : Boolean

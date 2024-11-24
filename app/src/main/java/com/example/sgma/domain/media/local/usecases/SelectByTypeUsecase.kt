@@ -1,8 +1,8 @@
-package com.example.sgma.domain.media.usecases
+package com.example.sgma.domain.media.local.usecases
 
 import com.example.sgma.data.entity.StatusType
 import com.example.sgma.domain.media.Media
-import com.example.sgma.domain.media.LocalMediaRepository
+import com.example.sgma.domain.media.local.LocalMediaRepository
 import javax.inject.Inject
 
 class SelectByTypeUsecase @Inject constructor(

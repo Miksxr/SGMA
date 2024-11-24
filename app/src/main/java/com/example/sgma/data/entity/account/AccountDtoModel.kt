@@ -14,7 +14,7 @@ data class AccountDtoModel(
 ) {
     constructor() : this(
         name = "",
-        image = R.drawable.icon_profile,
+        image = R.drawable.sigma,
         description = "",
         comments = emptyList(),
         friends = emptyList(),
