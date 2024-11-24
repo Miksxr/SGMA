@@ -14,15 +14,13 @@ roomVersion = "2.6.1"
 hiltAndroid = "2.52"
 
 agp = "8.5.2"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.22"
+kotlin = "1.9.0"
+ksp = "1.9.0-1.0.13"
 googleGmsGoogleServices = "4.4.2"
-firebaseFirestore = "25.1.0"
+firebaseFirestore = "25.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilComposeVersion" }
-coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -36,11 +34,16 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilComposeVersion" }
+coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeVersion" }
+
 retrofit = {group = "com.squareup.retrofit2", name = "retrofit", version = "2.11.0"}
 okHttp = { group = "com.squareup.okhttp3", name = "okhttp", version = "4.12.0" }
 retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version = "2.1.0" }
 retrofit-serialization = {group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
-kotlinx-serealization = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.7.0"}
+
+kotlinx-serealization = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.7.3"}
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 
@@ -61,4 +64,4 @@ kotlinx-serealization = {id = "org.jetbrains.kotlin.plugin.serialization", versi
 devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+

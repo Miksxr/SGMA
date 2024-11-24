@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -24,7 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,9 +40,9 @@ import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.presentation.navigation.Navigation
-import com.example.sgma.presentation.ui.MediaCard
-import com.example.sgma.presentation.ui.SGMAAppBar
-import com.example.sgma.presentation.ui.getFakeMediaList
+import com.example.sgma.presentation.ui.items.MediaCard
+import com.example.sgma.presentation.ui.items.SGMAAppBar
+import com.example.sgma.presentation.ui.fakelist.getFakeMediaList
 
 @Composable
 fun MainScreen(
@@ -53,7 +52,8 @@ fun MainScreen(
     val mediaList = multimediaViewModel.mediaList.value
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Все") }
-    var selectedSortOption by remember { mutableStateOf("Самые популярные") }
+    var selectedSortOption by remember { mutableStateOf("Популярные") }
+    var selectedFriendOption by remember { mutableStateOf("Все пользователи") }
     var showFilterDialog by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
@@ -71,7 +71,7 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            val headerText = "${if (selectedCategory == "Все") "Все" else selectedCategory} - $selectedSortOption"
+            val headerText = "${if (selectedCategory == "Все") "Все" else selectedCategory} - $selectedSortOption - $selectedFriendOption"
 
             Row(
                 modifier = Modifier
@@ -82,7 +82,7 @@ fun MainScreen(
             ) {
                 Text(
                     text = headerText,
-                    fontSize = 18.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -96,12 +96,15 @@ fun MainScreen(
             }
 
             if (showFilterDialog) {
-                FilterDialog(selectedCategory = selectedCategory,
+                FilterDialog(
+                    selectedCategory = selectedCategory,
                     selectedSortOption = selectedSortOption,
+                    selectedFriendOption = selectedFriendOption,
                     onDismissRequest = { showFilterDialog = false },
-                    onApplyFilter = { category, sortOption ->
+                    onApplyFilter = { category, sortOption, friendOption ->
                         selectedCategory = category
                         selectedSortOption = sortOption
+                        selectedFriendOption = friendOption
                         showFilterDialog = false
                     })
             }
@@ -141,17 +144,21 @@ fun MainScreen(
 fun FilterDialog(
     selectedCategory: String,
     selectedSortOption: String,
+    selectedFriendOption: String,
     onDismissRequest: () -> Unit,
-    onApplyFilter: (String, String) -> Unit
+    onApplyFilter: (String, String, String) -> Unit
 ) {
     val categories = listOf("Все", "Game", "Film", "Anime", "Serial")
-    val sortOptions = listOf("Самые популярные", "Самые высокооценённые", "Самые низкооценённые")
+    val sortOptions = listOf("Популярные", "Высокооценённые SGMA", "Низкооценённые SGMA", "Высокооценённые", "Низкооценённые")
+    val friendOptions = listOf("Все пользователи", "Только друзья")
 
     var category by remember { mutableStateOf(selectedCategory) }
     var sortOption by remember { mutableStateOf(selectedSortOption) }
+    var friendOption by remember { mutableStateOf(selectedFriendOption) }
 
     var categoryExpanded by remember { mutableStateOf(false) }
     var sortOptionExpanded by remember { mutableStateOf(false) }
+    var friendOptionExpanded by remember { mutableStateOf(false) }
 
     AlertDialog(onDismissRequest = onDismissRequest, title = { Text(text = "Фильтры") }, text = {
         Column {
@@ -162,7 +169,7 @@ fun FilterDialog(
                     value = category,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Выберите категорию") },
+                    label = { Text("Выберите медиа:") },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
                             expanded = categoryExpanded
@@ -187,14 +194,13 @@ fun FilterDialog(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(text = "Сортировка:")
-
             ExposedDropdownMenuBox(expanded = sortOptionExpanded,
                 onExpandedChange = { sortOptionExpanded = !sortOptionExpanded }) {
                 TextField(
                     value = sortOption,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Выберите сортировку") },
+                    label = { Text("Выберите сортировку:") },
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
                             expanded = sortOptionExpanded
@@ -215,16 +221,48 @@ fun FilterDialog(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(text = "Область:")
+            ExposedDropdownMenuBox(expanded = friendOptionExpanded,
+                onExpandedChange = { friendOptionExpanded = !friendOptionExpanded }) {
+                TextField(
+                    value = friendOption,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Выберите область:") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = friendOptionExpanded
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(MenuAnchorType.PrimaryEditable, enabled = true)
+                )
+                ExposedDropdownMenu(
+                    expanded = friendOptionExpanded,
+                    onDismissRequest = { friendOptionExpanded = false }) {
+                    friendOptions.forEach { option ->
+                        DropdownMenuItem(text = { Text(option) }, onClick = {
+                            friendOption = option
+                            friendOptionExpanded = false
+                        })
+                    }
+                }
+            }
         }
     }, confirmButton = {
-        TextButton(onClick = { onApplyFilter(category, sortOption) }) {
+        TextButton(onClick = { onApplyFilter(category, sortOption, friendOption) }) {
             Text(text = "Применить")
         }
     }, dismissButton = {
         TextButton(onClick = onDismissRequest) {
-            Text(text = "Отмена")
+            Text("Закрыть", color = Color.Red)
         }
     })
 }
+
 
 

@@ -5,6 +5,7 @@ data class News(
     val name: String,
     val image: Int,
     val media: String,
+    val date: String,
     val statusType: StatusType = StatusType.None
 )
 

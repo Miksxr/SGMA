@@ -13,14 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.presentation.navigation.Navigation
-import com.example.sgma.presentation.navigation.NavigationItem
-import com.example.sgma.presentation.ui.MediaCard
-import com.example.sgma.presentation.ui.NewsCard
-import com.example.sgma.presentation.ui.SGMAAppBar
-import com.example.sgma.presentation.ui.getFakeMediaList
-import com.example.sgma.presentation.ui.getFakeNewsList
+import com.example.sgma.presentation.ui.items.NewsCard
+import com.example.sgma.presentation.ui.items.SGMAAppBar
+import com.example.sgma.presentation.ui.fakelist.getFakeNewsList
 
 @Composable
 fun RibbonScreen(navController: NavController) {

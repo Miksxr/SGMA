@@ -1,7 +1,9 @@
 package com.example.sgma.presentation.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -14,9 +16,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.sgma.presentation.ui.theme.SGMATheme
+import com.example.sgma.presentation.ui.theme.Violet
 
 @Composable
 fun Navigation(navController: NavController) {
+    val isDarkTheme = isSystemInDarkTheme()
     val listItems = listOf(
         NavigationItem.Home,
         NavigationItem.Ribbon,
@@ -35,19 +40,21 @@ fun Navigation(navController: NavController) {
                 icon = {
                     Icon(
                         painter = painterResource(id = item.iconId),
-                        contentDescription = item.title
+                        contentDescription = item.title,
+                        tint = if (currentRoute == item.route) MaterialTheme.colorScheme.primary
+                        else if (isDarkTheme) Color.White
+                        else Color.Black
                     )
                 },
                 label = {
                     Text(
                         text = item.title,
+                        color = if (currentRoute == item.route) MaterialTheme.colorScheme.primary
+                        else if (isDarkTheme) Color.White
+                        else Color.Black,
                         fontSize = 10.sp
                     )
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Blue,
-                    unselectedIconColor = Color.Gray
-                )
+                }
             )
         }
     }
