@@ -8,9 +8,10 @@ data class Media(
     val id: Int,
     val name: String,
     val image: Int, // Изменил для фейков
-    val year: Int,
+    val year: String,
     val sgmaRating: Double,
-    val anotherRating: Double,
+    val anotherRating: Int,
+    val description: String,
     val type: ContentTypes,
     val statusType: StatusType = StatusType.None
 )

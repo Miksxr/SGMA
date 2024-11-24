@@ -10,9 +10,10 @@ data class MediaDBModel(
     @PrimaryKey val id: Int,
     val name: String,
     val image: Int, // Изменил для фейков
-    val year: Int,
+    val year: String,
     val sgmaRating: Double,
-    val anotherRating: Double,
+    val anotherRating: Int,
+    val description: String,
     val type: String,
     val statusType: String = StatusType.None.name
 )

@@ -6,9 +6,9 @@ data class Multimedia(
     val id: Int,
     val nameRu: String,
     val image: Int, // Изменил для фейков
-    val year: Int,
+    val year: String,
     val sgmaRating: Double,
-    val kinopoiskReting: Double,
+    val kinopoiskReting: Int,
     val description: String, // Я добавил
     val statusType: StatusType = StatusType.None // Я добавил
 )

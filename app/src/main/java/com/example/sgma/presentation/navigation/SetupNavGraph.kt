@@ -16,9 +16,12 @@ import com.example.sgma.presentation.ui.screens.LoginScreen
 import com.example.sgma.presentation.ui.screens.MainScreen
 import com.example.sgma.presentation.ui.screens.MultimediaDetailScreen
 import com.example.sgma.presentation.ui.screens.SettingsScreen
-import com.example.sgma.presentation.ui.getFakeMediaList
+import com.example.sgma.presentation.ui.fakelist.getFakeMediaList
+import com.example.sgma.presentation.ui.screens.FriendsScreen
 import com.example.sgma.presentation.ui.screens.ProfileScreen
+import com.example.sgma.presentation.ui.screens.RatingsScreen
 import com.example.sgma.presentation.ui.screens.RibbonScreen
+import com.example.sgma.presentation.ui.screens.StatusesScreen
 
 @Composable
 fun CombinedGraph(
@@ -31,20 +34,10 @@ fun CombinedGraph(
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
-            LoginScreen(
-                email = "",
-                onEmailChange = {},
-                password = "",
-                onPasswordChange = {},
-                navController = navController
-            )
+            LoginScreen(navController = navController)
         }
         composable("registration") {
-            RegistrationScreen(
-                email = "",
-                onEmailChange = {},
-                navController = navController
-            )
+            RegistrationScreen(navController = navController)
         }
 
         composable("main") {
@@ -56,8 +49,17 @@ fun CombinedGraph(
         composable("profile") {
             ProfileScreen(navController = navController, profileViewModel, context)
         }
+        composable("ratings") {
+            RatingsScreen(navController = navController)
+        }
+        composable("statuses") {
+            StatusesScreen(navController = navController)
+        }
         composable("settings") {
             SettingsScreen(navController = navController)
+        }
+        composable("friends") {
+            FriendsScreen(navController = navController)
         }
         composable("media_list") {
             MainScreen(navController = navController)
@@ -76,7 +78,7 @@ fun CombinedGraph(
                         sgmaRating = it.sgmaRating,
                         metacritic = it.anotherRating,
                         statusType = it.statusType,
-                        description = "Описание для игры ${it.name}"
+                        description = it.description
                     ),
                     navController = navController,
                     viewModel = localMediaViewModel,

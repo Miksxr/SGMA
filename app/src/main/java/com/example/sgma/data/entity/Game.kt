@@ -7,9 +7,9 @@ data class Game(
     val id: Int,
     val name: String,
     val image: Int, // Изменил для фейков
-    val year: Int,
+    val year: String,
     val sgmaRating: Double,
-    val metacritic: Double,
+    val metacritic: Int,
     val description: String,
     val statusType: StatusType = StatusType.None // Я добавил
 )

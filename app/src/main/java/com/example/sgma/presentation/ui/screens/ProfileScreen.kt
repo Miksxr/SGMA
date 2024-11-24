@@ -1,11 +1,9 @@
 package com.example.sgma.presentation.ui.screens
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,18 +17,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,20 +34,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
-import com.example.sgma.domain.profile.Profile
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.Navigation
-import com.example.sgma.presentation.ui.NewsCard
-import com.example.sgma.presentation.ui.SGMAAppBar
-import com.example.sgma.presentation.ui.getFakeNewsList
+import com.example.sgma.presentation.ui.items.RatingMediaCard
+import com.example.sgma.presentation.ui.items.SGMAAppBar
+import com.example.sgma.presentation.ui.items.StatusMediaCard
+import com.example.sgma.presentation.ui.fakelist.getFakeRatingMediaList
+import com.example.sgma.presentation.ui.fakelist.getFakeStatusMediaList
 
 @Composable
 fun ProfileScreen(
@@ -67,18 +59,17 @@ fun ProfileScreen(
         mutableStateOf(profileViewModel.account.value)
     }
 
-    profileViewModel.account.observe(context as LifecycleOwner, {
+    profileViewModel.account.observe(context as LifecycleOwner) {
         profile = it
-    })
+    }
 
-    profileViewModel.lastActionResult.observe(context as LifecycleOwner, {
+    profileViewModel.lastActionResult.observe(context as LifecycleOwner) {
         if (it) {
             profileViewModel.getAccountData(profile?.login ?: "")
-        }
-        else {
+        } else {
             Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
         }
-    })
+    }
 
     Scaffold(
         topBar = {
@@ -100,7 +91,7 @@ fun ProfileScreen(
         ) {
 
             Image(
-                painter = painterResource(id = profile?.image ?: R.drawable.icon_profile ),
+                painter = painterResource(id = profile?.image ?: R.drawable.no_user ),
                 contentDescription = "Profile",
                 modifier = Modifier
                     .size(150.dp)
@@ -137,7 +128,7 @@ fun ProfileScreen(
             )
 
             IconButton(
-                onClick = { /* Действие для кнопки "Друзья" */ },
+                onClick = { navController.navigate("friends") },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Icon(
@@ -152,7 +143,7 @@ fun ProfileScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 4.dp),
             ) {
                 Column(
                     modifier = Modifier.weight(1f),
@@ -171,26 +162,25 @@ fun ProfileScreen(
 
                         Text(
                             text = "Все",
-                            color = Color.Red,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 18.sp,
                             modifier = Modifier
-                                .clickable { /* Действие для нажатия на "Все" */ }
-                                .padding(8.dp) // Дополнительный отступ
+                                .clickable { navController.navigate("statuses") }
+                                .padding(8.dp)
                         )
                     }
 
-                    Column(modifier = Modifier.padding(start = 2.dp)) {
-                        Text(text = "Фильмы: ${profile?.statistic?.films ?: 0}")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Сериалы: ${profile?.statistic?.serials ?: 0}")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Аниме: ${profile?.statistic?.anime ?: 0}")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "Игры: ${profile?.statistic?.games ?: 0}")
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    ) {
+                        items(getFakeStatusMediaList()) { media ->
+                            StatusMediaCard(media = media)
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.width(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 VerticalDivider(
                     color = Color.Gray.copy(alpha = 0.5f),
@@ -199,7 +189,7 @@ fun ProfileScreen(
                         .fillMaxHeight()
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 Column(
                     modifier = Modifier.weight(1f),
@@ -218,22 +208,21 @@ fun ProfileScreen(
 
                         Text(
                             text = "Все",
-                            color = Color.Red,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 18.sp,
                             modifier = Modifier
-                                .clickable { /* Действие для нажатия на "Все" */ }
-                                .padding(8.dp) // Дополнительный отступ
+                                .clickable { navController.navigate("ratings") }
+                                .padding(8.dp)
                         )
                     }
 
-                    Column(modifier = Modifier.padding(start = 2.dp)) {
-                        Text(text = ">90: 82")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "75-90: 34")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "50-75: 1")
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = "<50: 77")
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    ) {
+                        items(getFakeRatingMediaList()) { media ->
+                            RatingMediaCard(media = media)
+                        }
                     }
                 }
             }
