@@ -1,9 +1,6 @@
 package com.example.sgma.domain.media.remote.multimedia
 
-import com.example.sgma.R
-import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.data.entity.remotemedia.MultimediaDtoModel
 
 // сущность которая отображается в полной версии страницы фильма/сериала/аниме
 data class Multimedia(

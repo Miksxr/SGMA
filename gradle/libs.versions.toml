@@ -14,8 +14,8 @@ roomVersion = "2.6.1"
 hiltAndroid = "2.52"
 
 agp = "8.5.2"
-kotlin = "1.9.0"
-ksp = "1.9.0-1.0.13"
+kotlin = "2.0.0"
+ksp = "2.0.21-1.0.25"
 googleGmsGoogleServices = "4.4.2"
 firebaseFirestore = "25.1.1"
 
@@ -64,4 +64,4 @@ kotlinx-serealization = {id = "org.jetbrains.kotlin.plugin.serialization", versi
 devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

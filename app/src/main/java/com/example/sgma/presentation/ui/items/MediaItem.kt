@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.rememberAsyncImagePainter
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
 import com.example.sgma.domain.media.Media
@@ -53,7 +54,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                 .height(130.dp)
         ) {
             Image(
-                painter = painterResource(id = mediaDBModel.image),
+                painter = rememberAsyncImagePainter(mediaDBModel.image),
                 contentDescription = mediaDBModel.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -137,7 +138,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                         fontSize = 14.sp,
                     )
                 }
-                ContentTypes.Film -> {
+                ContentTypes.FILM -> {
                     Text(
                         text = "Длительность: 78 мин",
                         fontSize = 14.sp,
@@ -150,7 +151,11 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                     )
                 }
 
-                ContentTypes.Unknown -> TODO()
+                ContentTypes.Unknown -> {}
+                ContentTypes.VIDEO -> {}
+                ContentTypes.TV_SERIES -> {}
+                ContentTypes.MINI_SERIES -> {}
+                ContentTypes.TV_SHOW -> {}
             }
         }
     }
@@ -177,7 +182,7 @@ fun RatingMediaCard2(mediaDBModel: Media, onClick: () -> Unit) {
                 .height(130.dp)
         ) {
             Image(
-                painter = painterResource(id = mediaDBModel.image),
+                painter = rememberAsyncImagePainter(mediaDBModel.image),
                 contentDescription = mediaDBModel.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -261,7 +266,7 @@ fun RatingMediaCard2(mediaDBModel: Media, onClick: () -> Unit) {
                         fontSize = 14.sp,
                     )
                 }
-                ContentTypes.Film -> {
+                ContentTypes.FILM -> {
                     Text(
                         text = "Длительность: 78 мин",
                         fontSize = 14.sp,
@@ -274,7 +279,11 @@ fun RatingMediaCard2(mediaDBModel: Media, onClick: () -> Unit) {
                     )
                 }
 
-                ContentTypes.Unknown -> TODO()
+                ContentTypes.Unknown -> {}
+                ContentTypes.VIDEO -> {}
+                ContentTypes.TV_SERIES -> {}
+                ContentTypes.MINI_SERIES -> {}
+                ContentTypes.TV_SHOW -> {}
             }
 
             Row(

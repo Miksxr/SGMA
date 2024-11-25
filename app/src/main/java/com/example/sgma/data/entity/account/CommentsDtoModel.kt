@@ -1,15 +1,17 @@
 package com.example.sgma.data.entity.account
 
+import com.example.sgma.R
+
 data class CommentsDtoModel(
-    val film_id: Int,
-    val sgma_rating: Double,
-    val account_name: String,
-    val comment: String
+    val username: String,
+    val text: String,
+    val date: String,
+    val avatar: Int
 ) {
     constructor() : this(
-        -1,
-        -1.0,
         "",
-        ""
+        "",
+        "",
+        R.drawable.no_user
     )
 }

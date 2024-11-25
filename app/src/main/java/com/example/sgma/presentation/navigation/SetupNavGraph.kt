@@ -2,13 +2,20 @@ package com.example.sgma.presentation.navigation
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
-import com.example.sgma.data.entity.Game
-import com.example.sgma.data.entity.Multimedia
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.remote.game.Game
+import com.example.sgma.domain.media.remote.multimedia.Multimedia
+import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.ui.screens.RegistrationScreen
 import com.example.sgma.presentation.ui.screens.GameDetailScreen
@@ -28,6 +35,7 @@ fun CombinedGraph(
     navController: NavHostController,
     localMediaViewModel: LocalMediaViewModel,
     profileViewModel: ProfileViewModel,
+    multimediaViewModel: MultimediaViewModel,
     context: Context
 ) {
     val mediaList = getFakeMediaList()
@@ -41,7 +49,7 @@ fun CombinedGraph(
         }
 
         composable("main") {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, multimediaViewModel)
         }
         composable("ribbon") {
             RibbonScreen(navController = navController)
@@ -62,7 +70,7 @@ fun CombinedGraph(
             FriendsScreen(navController = navController)
         }
         composable("media_list") {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, multimediaViewModel)
         }
 
         composable("game_detail/{gameId}") { backStackEntry ->
@@ -73,12 +81,12 @@ fun CombinedGraph(
                     game = Game(
                         id = it.id,
                         name = it.name,
-                        image = it.image,
+                        image = R.drawable.kop, // пока нету работы с GameAPI
                         year = it.year,
                         sgmaRating = it.sgmaRating,
-                        metacritic = it.anotherRating,
+                        metacritic = it.anotherRating.toInt(), // пока нету работы с GameAPI
                         statusType = it.statusType,
-                        description = it.description
+                        description = "" // пока нету работы с GameAPI
                     ),
                     navController = navController,
                     viewModel = localMediaViewModel,
@@ -88,24 +96,17 @@ fun CombinedGraph(
         }
         composable("multimedia_detail/{mediaId}") { backStackEntry ->
             val mediaId = backStackEntry.arguments?.getString("mediaId")?.toIntOrNull()
-            val multimedia = mediaList.find { it.id == mediaId && it.type != ContentTypes.Game }
-            multimedia?.let {
-                MultimediaDetailScreen(
-                    multimedia = Multimedia(
-                        id = it.id,
-                        nameRu = it.name,
-                        image = it.image,
-                        year = it.year,
-                        sgmaRating = it.sgmaRating,
-                        kinopoiskReting = it.anotherRating,
-                        statusType = it.statusType,
-                        description = "Описание для мультимедия ${it.name}"
-                    ),
-                    navController = navController,
-                    viewModel = localMediaViewModel,
-                    context = context
-                )
+            multimediaViewModel.findMultimedia(mediaId!!)
+            var mult by remember { mutableStateOf(Multimedia()) }
+            multimediaViewModel.multimedia.observe(context as LifecycleOwner) { media ->
+                mult = media
             }
+            MultimediaDetailScreen(
+                multimedia = mult,
+                navController = navController,
+                viewModel = localMediaViewModel,
+                context = context
+            )
         }
     }
 }
