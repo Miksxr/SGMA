@@ -10,12 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.sgma.domain.ConnectivityReceiver
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.CombinedGraph
 import com.example.sgma.presentation.ui.theme.SGMATheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.serialization.json.JsonNull.content
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -26,6 +26,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var profileViewModel: ProfileViewModel
+
+    @Inject
+    lateinit var multimediaViewModel: MultimediaViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,7 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             localMediaViewModel = localMediaViewModel,
                             profileViewModel = profileViewModel,
+                            multimediaViewModel = multimediaViewModel,
                             context = this@MainActivity
                         )
                     }

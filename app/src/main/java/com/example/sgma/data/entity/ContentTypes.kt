@@ -9,5 +9,6 @@ enum class ContentTypes {
     Unknown,
     VIDEO,
     TV_SERIES,
-    MINI_SERIES
+    MINI_SERIES,
+    TV_SHOW
 }

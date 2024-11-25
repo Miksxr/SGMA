@@ -58,10 +58,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
-import com.example.sgma.data.entity.Comment
-import com.example.sgma.data.entity.Game
+import com.example.sgma.domain.comment.Comment
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.remote.game.Game
 import com.example.sgma.presentation.ui.items.CommentCard
 import kotlin.math.roundToInt
 

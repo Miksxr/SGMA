@@ -57,11 +57,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
+import coil3.compose.rememberAsyncImagePainter
 import com.example.sgma.R
-import com.example.sgma.data.entity.Comment
-import com.example.sgma.data.entity.Multimedia
+import com.example.sgma.domain.comment.Comment
+import com.example.sgma.domain.media.remote.multimedia.Multimedia
 import com.example.sgma.data.entity.StatusType
-import com.example.sgma.domain.media.viemodel.LocalMediaViewModel
+import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.presentation.ui.items.CommentCard
 import kotlin.math.roundToInt
 
@@ -87,7 +88,6 @@ fun MultimediaDetailScreen(
             val screenshots = getFakeScreenshotsList()
 
             viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
-                Log.d("LOG", inDBState.toString())
                 inCollectionState.value = inDBState
             }
 
@@ -104,7 +104,7 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Image(
-                painter = painterResource(id = multimedia.image),
+                painter = rememberAsyncImagePainter(multimedia.image),
                 contentDescription = multimedia.nameRu,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -164,7 +164,7 @@ fun MultimediaDetailScreen(
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
-                    text = statusType.value.getLocalizedString(),
+                    text = statusType.value?.getLocalizedString() ?: "",
                     fontSize = 18.sp,
                 )
             }
@@ -228,7 +228,7 @@ fun MultimediaDetailScreen(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
-                    text = "${multimedia.kinopoiskReting}",
+                    text = "${multimedia.kinopoiskRating}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 22.sp
                 )
@@ -280,7 +280,7 @@ fun MultimediaDetailScreen(
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                         append("Дата выхода: ")
                     }
-                    append(multimedia.year)
+                    append(multimedia.year.toString())
                 },
                 fontSize = 18.sp
             )

@@ -24,7 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sgma.data.entity.Comment
+import com.example.sgma.domain.comment.Comment
 
 @Composable
 fun CommentCard(comment: Comment) {

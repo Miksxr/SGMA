@@ -7,11 +7,10 @@ import com.example.sgma.data.entity.StatusType
 data class Media(
     val id: Int,
     val name: String,
-    val image: Int, // Изменил для фейков
+    val image: String, // Изменил для фейков
     val year: String,
     val sgmaRating: Double,
-    val anotherRating: Int,
-    val description: String,
+    val anotherRating: Double,
     val type: ContentTypes,
     val statusType: StatusType = StatusType.None
 )
