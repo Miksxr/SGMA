@@ -16,6 +16,10 @@ class MultimediaDtoModelMapper {
             description = multimediaDtoModel.description ?: "Описания пока нету",
             countries = multimediaDtoModel.countries.joinToString(", ") { it.country },
             genres = multimediaDtoModel.genres.joinToString(", ") { it.genre },
+            length = multimediaDtoModel.length.toString(),
+            images = multimediaDtoModel.images,
+            nameOriginal = multimediaDtoModel.nameOriginal,
+            ageLimit = multimediaDtoModel.ageLimits,
             statusType = multimediaDtoModel.statusType
         )
     }

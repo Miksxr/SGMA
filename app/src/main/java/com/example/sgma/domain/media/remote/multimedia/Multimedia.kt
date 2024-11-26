@@ -6,14 +6,18 @@ import com.example.sgma.data.entity.StatusType
 data class Multimedia(
     val id: Int,
     val nameRu: String,
-    val image: String, // Изменил для фейков
+    val image: String,
+    val nameOriginal : String,
     val year: Int,
     val sgmaRating: Double,
     val kinopoiskRating: Double,
-    val description: String, // Я добавил
+    val description: String,
     val countries: String,
     val genres : String,
-    val statusType: StatusType? = StatusType.None// Я добавил
+    val length : String,
+    val images : List<String>,
+    val ageLimit : String,
+    val statusType: StatusType? = StatusType.None
 ) {
     constructor() : this(
         id = -1,
@@ -24,6 +28,10 @@ data class Multimedia(
         kinopoiskRating = 0.0,
         description = "",
         countries = "",
+        nameOriginal = "",
+        length = "0",
+        ageLimit = "age0",
+        images = emptyList(),
         genres = ""
     )
 }
