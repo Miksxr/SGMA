@@ -17,10 +17,16 @@ interface MultimediaService {
         @Header("X-API-KEY") key : String
     ) : Call<MultimediaDtoModel>
 
-    @GET("api/v2.2/films")
+    @GET("api/v2.2/films/collections")
     fun getPopularMultimediaList(
         @Query("page") page : Int,
         @Header("X-API-KEY") key : String
-    )
-    : Call<RemoteDatasourceMultimediaImpl.Handler>
+    ) : Call<RemoteDatasourceMultimediaImpl.Handler>
+
+    @GET("api/v2.2/films/{id}/images")
+    fun getImages(
+        @Path("id") id : Int,
+        @Header("X-API-KEY") key : String,
+        @Query("type") type : String = "STILL",
+    ) : Call<RemoteDatasourceMultimediaImpl.ImageHandler>
 }

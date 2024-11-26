@@ -21,7 +21,6 @@ class RemoteDatasourceMultimediaImpl : RemoteDatasourceMultimedia {
 
     private val apiService : MultimediaService
 
-
     init {
         apiClient = ApiClient(
             url = "https://kinopoiskapiunofficial.tech/",
@@ -31,7 +30,10 @@ class RemoteDatasourceMultimediaImpl : RemoteDatasourceMultimedia {
     }
 
     override suspend fun getMultimedia(id: Int): MultimediaDtoModel {
-        return apiService.getMultimedia(id, apiClient.secretKey).await()
+        return MultimediaDtoModel(
+            apiService.getMultimedia(id, apiClient.secretKey).await(),
+            apiService.getImages(id, apiClient.secretKey).await().items.map { it.imageIrl }
+        )
     }
 
     override suspend fun getPopularMultimediaList(page : Int): List<MediaDtoModel> {
@@ -45,5 +47,16 @@ class RemoteDatasourceMultimediaImpl : RemoteDatasourceMultimedia {
         @SerializedName("items") val items : List<MediaDtoModel>
     ) {
         constructor() : this(-1, -1, emptyList())
+    }
+
+    @Serializable
+    data class ImageHandler (
+        @SerializedName("items") val items : List<Posters>
+    ) {
+        @Serializable
+        data class Posters(
+            @SerializedName("imageUrl") val imageIrl : String,
+            @SerializedName("previewUrl") val previewUrl : String
+        )
     }
 }

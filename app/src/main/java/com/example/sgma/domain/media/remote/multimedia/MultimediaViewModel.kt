@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sgma.domain.media.Media
 import com.example.sgma.domain.media.remote.multimedia.usecases.GetMultimediaUsecase
 import com.example.sgma.domain.media.remote.multimedia.usecases.GetPopularMultimediaListUsecase
+import com.example.sgma.presentation.ui.fakelist.getFakeMediaList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

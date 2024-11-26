@@ -9,7 +9,7 @@ class CommentMapper {
             username = model.username,
             text = model.text,
             date = model.date,
-            avatar = model.avatar
+            avatar = model.avatar,
         )
     }
 
@@ -18,7 +18,7 @@ class CommentMapper {
             username = model.username,
             text = model.text,
             date = model.date,
-            avatar = model.avatar
+            avatar = model.avatar,
         )
     }
 }

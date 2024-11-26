@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
+import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.media.remote.game.Game
 import com.example.sgma.domain.media.remote.multimedia.Multimedia
@@ -36,6 +37,7 @@ fun CombinedGraph(
     localMediaViewModel: LocalMediaViewModel,
     profileViewModel: ProfileViewModel,
     multimediaViewModel: MultimediaViewModel,
+    commentViewModel: CommentViewModel,
     context: Context
 ) {
     val mediaList = getFakeMediaList()
@@ -105,6 +107,7 @@ fun CombinedGraph(
                 multimedia = mult,
                 navController = navController,
                 viewModel = localMediaViewModel,
+                commentViewModel = commentViewModel,
                 context = context
             )
         }

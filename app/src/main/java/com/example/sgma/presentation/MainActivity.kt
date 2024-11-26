@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.sgma.domain.ConnectivityReceiver
+import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
@@ -29,6 +30,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var multimediaViewModel: MultimediaViewModel
+
+    @Inject
+    lateinit var commentViewModel: CommentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,7 @@ class MainActivity : ComponentActivity() {
                             localMediaViewModel = localMediaViewModel,
                             profileViewModel = profileViewModel,
                             multimediaViewModel = multimediaViewModel,
+                            commentViewModel = commentViewModel,
                             context = this@MainActivity
                         )
                     }

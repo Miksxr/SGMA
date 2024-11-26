@@ -46,6 +46,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -55,6 +56,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
@@ -62,8 +64,12 @@ import com.example.sgma.R
 import com.example.sgma.domain.comment.Comment
 import com.example.sgma.domain.media.remote.multimedia.Multimedia
 import com.example.sgma.data.entity.StatusType
+import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
 import com.example.sgma.presentation.ui.items.CommentCard
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @Composable
@@ -71,6 +77,7 @@ fun MultimediaDetailScreen(
     multimedia: Multimedia,
     navController: NavController,
     viewModel: LocalMediaViewModel,
+    commentViewModel: CommentViewModel,
     context: Context
 ) {
     LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -83,9 +90,8 @@ fun MultimediaDetailScreen(
 
             var isImageFullscreen by remember { mutableStateOf(false) }
             var selectedImageIndex by remember { mutableIntStateOf(0) }
-            var selectedImage by remember { mutableStateOf(getFakeScreenshotsList().firstOrNull()) }
 
-            val screenshots = getFakeScreenshotsList()
+            var commentText by remember { mutableStateOf("") }
 
             viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
                 inCollectionState.value = inDBState
@@ -122,9 +128,10 @@ fun MultimediaDetailScreen(
                     fontWeight = FontWeight.Bold
                 )
 
-                val ratingColor = when ("0+") {
-                    "0+" -> Color.Green
-                    "18+" -> Color.Red
+                val ratingColor = when (multimedia.ageLimit) {
+                    "age0" -> Color.Green
+                    "age16" -> Color.Yellow
+                    "age18" -> Color.Red
                     else -> Color.Gray
                 }
 
@@ -134,7 +141,7 @@ fun MultimediaDetailScreen(
                         .align(Alignment.Top)
                 ) {
                     Text(
-                        text = "0+",
+                        text = multimedia.ageLimit.filter { it.isDigit() } + "+",
                         fontSize = 10.sp,
                         color = ratingColor,
                         fontWeight = FontWeight.Bold,
@@ -150,7 +157,7 @@ fun MultimediaDetailScreen(
             }
 
             Text(
-                text = "Green elephant",
+                text = multimedia.nameOriginal,
                 fontSize = 22.sp,
             )
 
@@ -246,7 +253,7 @@ fun MultimediaDetailScreen(
 
             Row {
                 Text(
-                    text = "Оцените игру: ${ratingState.floatValue.toDouble()}",
+                    text = "Ваша оценка: ${ratingState.floatValue.toDouble()}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
@@ -292,7 +299,7 @@ fun MultimediaDetailScreen(
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                         append("Длительность: ")
                     }
-                    append("82 минуты")
+                    append("${multimedia.length} минуты")
                 },
                 fontSize = 18.sp
             )
@@ -302,9 +309,9 @@ fun MultimediaDetailScreen(
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Издатель: ")
+                        append("Страна: ")
                     }
-                    append("Pixar")
+                    append(multimedia.countries)
                 },
                 fontSize = 18.sp
             )
@@ -316,22 +323,11 @@ fun MultimediaDetailScreen(
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                         append("Жанры: ")
                     }
-                    append("Drama, Thriller, Sci-Fi")
+                    append(multimedia.genres)
                 },
                 fontSize = 18.sp
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Теги: ")
-                    }
-                    append("Emotional, Thought-Provoking, Visually Stunning")
-                },
-                fontSize = 18.sp
-            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -341,28 +337,44 @@ fun MultimediaDetailScreen(
                 fontSize = 20.sp
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             LazyRow(
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(getFakeScreenshotsList()) { index, screenshot ->
-                    Image(
-                        painter = painterResource(id = screenshot),
-                        contentDescription = "Скриншот игры",
-                        modifier = Modifier
-                            .clickable {
-                                selectedImageIndex = index
-                                isImageFullscreen = true
-                            }
-                            .size(150.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                    )
+                if (multimedia.images.isEmpty()) {
+                    items(3) {
+                        Text(
+                            text = "Тут пока ничего нету",
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                else {
+                    itemsIndexed(multimedia.images) { index, screenshot ->
+                        Image(
+                            painter = rememberAsyncImagePainter(screenshot),
+                            contentDescription = "Скриншоты:",
+                            contentScale = ContentScale.FillHeight,
+                            modifier = Modifier
+                                .clickable {
+                                    selectedImageIndex = index
+                                    isImageFullscreen = true
+                                }
+                                .size(150.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    }
                 }
             }
 
             if (isImageFullscreen) {
-                Dialog(onDismissRequest = { isImageFullscreen = false }) {
+                Dialog(
+                    onDismissRequest = { isImageFullscreen = false },
+                    properties = DialogProperties(usePlatformDefaultWidth = false)
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -389,7 +401,8 @@ fun MultimediaDetailScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = painterResource(id = screenshots[selectedImageIndex]),
+                                painter =
+                                rememberAsyncImagePainter(multimedia.images[selectedImageIndex]),
                                 contentDescription = "Полный экран скриншота",
                                 modifier = Modifier
                                     .graphicsLayer(
@@ -405,7 +418,8 @@ fun MultimediaDetailScreen(
 
                         IconButton(
                             onClick = {
-                                selectedImageIndex = (selectedImageIndex - 1 + screenshots.size) % screenshots.size
+                                if (selectedImageIndex - 1 < 0) { selectedImageIndex = multimedia.images.size - 1 }
+                                else { selectedImageIndex-- }
                                 scale = 1f
                                 offset = Offset.Zero
                             },
@@ -423,7 +437,8 @@ fun MultimediaDetailScreen(
 
                         IconButton(
                             onClick = {
-                                selectedImageIndex = (selectedImageIndex + 1) % screenshots.size
+                                if (selectedImageIndex + 1 > multimedia.images.size - 1) { selectedImageIndex = 0 }
+                                else { selectedImageIndex++ }
                                 scale = 1f
                                 offset = Offset.Zero
                             },
@@ -441,6 +456,8 @@ fun MultimediaDetailScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Описание:",
@@ -465,14 +482,25 @@ fun MultimediaDetailScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = commentText,
+                    onValueChange = {
+                        commentText = it
+                    },
                     label = { Text(text = "Комментарий", fontSize = 18.sp) },
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp),
                 )
-                IconButton(onClick = { /* TODO: Логика отправки комментария */ }) {
+                IconButton(onClick = {
+                    commentViewModel.addComments(multimedia.id, Comment(
+                        username = "ACC_NAME",
+                        text = commentText,
+                        date = SimpleDateFormat("dd/M/yyyy hh:mm:ss",
+                            Locale.getDefault()).format(Calendar.getInstance().time),
+                        avatar = R.drawable.no_user
+                    ))
+                    commentText = ""
+                }) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_send),
                         contentDescription = "Отправить",
