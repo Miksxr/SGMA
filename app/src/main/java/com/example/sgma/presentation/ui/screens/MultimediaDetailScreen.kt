@@ -82,6 +82,8 @@ fun MultimediaDetailScreen(
 ) {
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         item {
+            commentViewModel.getComments(multimedia.id)
+
             val inCollectionState = remember { mutableStateOf(false) }
             val statusType = remember { mutableStateOf(multimedia.statusType) }
             val ratingState = remember { mutableFloatStateOf(5.5f) }
@@ -92,9 +94,14 @@ fun MultimediaDetailScreen(
             var selectedImageIndex by remember { mutableIntStateOf(0) }
 
             var commentText by remember { mutableStateOf("") }
+            var comments by remember { mutableStateOf(commentViewModel.comments.value) }
 
             viewModel.inDB.observe(context as LifecycleOwner) { inDBState ->
                 inCollectionState.value = inDBState
+            }
+
+            commentViewModel.comments.observe(context as LifecycleOwner) {
+                comments = it
             }
 
             viewModel.checkMediaInDB(multimedia.id)
@@ -492,12 +499,13 @@ fun MultimediaDetailScreen(
                         .padding(8.dp),
                 )
                 IconButton(onClick = {
-                    commentViewModel.addComments(multimedia.id, Comment(
+                    commentViewModel.addComments(multimedia.id, Comment( // TODO: new form comment logic
                         username = "ACC_NAME",
                         text = commentText,
                         date = SimpleDateFormat("dd/M/yyyy hh:mm:ss",
                             Locale.getDefault()).format(Calendar.getInstance().time),
-                        avatar = R.drawable.no_user
+                        avatar = R.drawable.no_user,
+                        sgmaRating = ratingState.floatValue.toDouble()
                     ))
                     commentText = ""
                 }) {
@@ -512,25 +520,9 @@ fun MultimediaDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Комментарии(3):",
+                text = "Комментарии(${comments?.size ?: 0}):",
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp
-            )
-
-            val comments = listOf(
-                Comment(
-                    "DevDay",
-                    "Режисёр пи*** диди!",
-                    "01.01.2024",
-                    R.drawable.gorin
-                ),
-                Comment(
-                    "Анна Асти",
-                    "ФИЛЬМ ЦАРИЦА!!!",
-                    "05.01.2024",
-                    R.drawable.gorin
-                ),
-                Comment("DevNight", "DevDay гад*н", "10.01.2024", R.drawable.gorin)
             )
 
             Column(
@@ -539,7 +531,7 @@ fun MultimediaDetailScreen(
                     .padding(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                comments.forEach { comment ->
+                comments?.forEach { comment ->
                     CommentCard(comment = comment)
                 }
             }
