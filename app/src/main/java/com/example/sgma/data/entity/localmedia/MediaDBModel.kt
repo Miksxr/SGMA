@@ -9,7 +9,7 @@ import com.example.sgma.data.entity.StatusType
 data class MediaDBModel(
     @PrimaryKey val id: Int,
     val name: String,
-    val image: String, // Изменил для фейков
+    val image: String,
     val year: String,
     val sgmaRating: Double,
     val anotherRating: Double,

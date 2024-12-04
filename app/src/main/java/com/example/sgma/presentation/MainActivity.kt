@@ -1,6 +1,7 @@
 package com.example.sgma.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +18,9 @@ import com.example.sgma.domain.profile.viewmodel.ProfileViewModel
 import com.example.sgma.presentation.navigation.CombinedGraph
 import com.example.sgma.presentation.ui.theme.SGMATheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint

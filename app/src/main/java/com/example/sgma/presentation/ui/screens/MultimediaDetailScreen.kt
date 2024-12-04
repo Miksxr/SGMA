@@ -136,7 +136,7 @@ fun MultimediaDetailScreen(
                 )
 
                 val ratingColor = when (multimedia.ageLimit) {
-                    "age0" -> Color.Green
+                    "age6" -> Color.Green
                     "age16" -> Color.Yellow
                     "age18" -> Color.Red
                     else -> Color.Gray

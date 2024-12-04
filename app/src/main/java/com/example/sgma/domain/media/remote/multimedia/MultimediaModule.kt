@@ -5,6 +5,7 @@ import com.example.sgma.data.datasource.remote.multimedia.RemoteDatasourceMultim
 import com.example.sgma.data.mapper.MediaDtoModelMapper
 import com.example.sgma.data.mapper.multimedia.MultimediaDtoModelMapper
 import com.example.sgma.data.repository.RemoteMultimediaRepositoryImpl
+import com.example.sgma.domain.media.remote.multimedia.usecases.FindMediaUsecase
 import com.example.sgma.domain.media.remote.multimedia.usecases.GetMultimediaUsecase
 import com.example.sgma.domain.media.remote.multimedia.usecases.GetPopularMultimediaListUsecase
 import dagger.Module
@@ -38,7 +39,8 @@ object MultimediaModule {
     fun provideMultimediaViewModel(repository: RemoteMultimediaRepository) : MultimediaViewModel {
         return MultimediaViewModel(
             getMultimediaUsecase = GetMultimediaUsecase(repository),
-            getPopularMultimediaList = GetPopularMultimediaListUsecase(repository)
+            getPopularMultimediaList = GetPopularMultimediaListUsecase(repository),
+            findMediaUsecase = FindMediaUsecase(repository)
         )
     }
 }

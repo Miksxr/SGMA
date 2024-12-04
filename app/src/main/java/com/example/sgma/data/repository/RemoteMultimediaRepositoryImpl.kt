@@ -1,5 +1,6 @@
 package com.example.sgma.data.repository
 
+import androidx.compose.runtime.key
 import com.example.sgma.data.datasource.remote.multimedia.RemoteDatasourceMultimedia
 import com.example.sgma.data.mapper.MediaDtoModelMapper
 import com.example.sgma.data.mapper.multimedia.MultimediaDtoModelMapper
@@ -18,5 +19,9 @@ class RemoteMultimediaRepositoryImpl(
 
     override suspend fun getPopularMultimediaList(page: Int): List<Media> {
         return remoteDatasourceMultimedia.getPopularMultimediaList(page).map { mediaDtoModelMapper.map(it) }
+    }
+
+    override suspend fun findMedia(keyword: String): List<Media> {
+        return remoteDatasourceMultimedia.findMedia(keyword).map { mediaDtoModelMapper.map(it) }
     }
 }

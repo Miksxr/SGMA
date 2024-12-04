@@ -7,4 +7,6 @@ interface RemoteDatasourceMultimedia {
     suspend fun getMultimedia(id : Int) : MultimediaDtoModel
 
     suspend fun getPopularMultimediaList(page : Int = 1) : List<MediaDtoModel>
+
+    suspend fun findMedia(keyword : String) : List<MediaDtoModel>
 }
