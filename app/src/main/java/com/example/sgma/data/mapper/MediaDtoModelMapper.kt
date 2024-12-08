@@ -12,7 +12,7 @@ class MediaDtoModelMapper {
             id = mediaDtoModel.id ?: -1,
             name = mediaDtoModel.name ?: "",
             image = mediaDtoModel.image,
-            year = mediaDtoModel.year.toString(),
+            year = mediaDtoModel.year,
             sgmaRating = mediaDtoModel.sgmaRating ?: -0.0,
             anotherRating = mediaDtoModel.anotherRating ?: -0.0,
             type = ContentTypes.valueOf(mediaDtoModel.type) ?: ContentTypes.Unknown,

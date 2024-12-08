@@ -1,5 +1,6 @@
 package com.example.sgma.presentation.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +25,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.sgma.R
 import com.example.sgma.data.entity.ContentTypes
@@ -42,23 +46,30 @@ import com.example.sgma.domain.media.remote.multimedia.MultimediaViewModel
 import com.example.sgma.presentation.navigation.Navigation
 import com.example.sgma.presentation.ui.items.MediaCard
 import com.example.sgma.presentation.ui.items.SGMAAppBar
-import com.example.sgma.presentation.ui.fakelist.getFakeMediaList
 
 @Composable
 fun MainScreen(
     navController: NavController,
-    multimediaViewModel : MultimediaViewModel
+    multimediaViewModel : MultimediaViewModel,
+    context: Context
 ) {
-    val mediaList = multimediaViewModel.mediaList.value
-    var searchQuery by remember { mutableStateOf("") }
+    var searchQuery by remember { mutableStateOf(multimediaViewModel.query.value) }
     var selectedCategory by remember { mutableStateOf("Все") }
     var selectedSortOption by remember { mutableStateOf("Популярные") }
     var selectedFriendOption by remember { mutableStateOf("Все пользователи") }
     var showFilterDialog by remember { mutableStateOf(false) }
+    var listMedia by remember { mutableStateOf(multimediaViewModel.mediaList.value) }
+
+    multimediaViewModel.mediaList.observe(context as LifecycleOwner) {
+        listMedia = it
+    }
 
     Scaffold(topBar = {
         SGMAAppBar(
-            onSearchQueryChange = { newQuery -> searchQuery = newQuery },
+            onSearchQueryChange = { newQuery ->
+                searchQuery = newQuery
+                multimediaViewModel.query.value = newQuery
+            },
             searchQuery = searchQuery,
             searchPlaceholder = "Поиск медиа...",
             navController = navController
@@ -109,11 +120,11 @@ fun MainScreen(
                     })
             }
 
-            val filteredList = mediaList!!.filter {
+            val filteredList = listMedia?.filter {
                 (selectedCategory == "Все" || it.type.name == selectedCategory) && it.name.contains(
                     searchQuery, ignoreCase = true
                 )
-            }.sortedWith(when (selectedSortOption) {
+            }?.sortedWith(when (selectedSortOption) {
                 "Самые популярные" -> compareByDescending { it.year }
                 "Самые высокооценённые" -> compareByDescending { it.sgmaRating }
                 "Самые низкооценённые" -> compareBy { it.sgmaRating }
@@ -124,7 +135,7 @@ fun MainScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(filteredList) { media ->
+                items(filteredList!!) { media ->
                     if (media.name != "") {
                         MediaCard(mediaDBModel = media, onClick = {
                             when (media.type) {

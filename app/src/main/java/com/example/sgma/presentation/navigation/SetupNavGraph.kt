@@ -51,7 +51,7 @@ fun CombinedGraph(
         }
 
         composable("main") {
-            MainScreen(navController = navController, multimediaViewModel)
+            MainScreen(navController = navController, multimediaViewModel, context)
         }
         composable("ribbon") {
             RibbonScreen(navController = navController)
@@ -72,7 +72,7 @@ fun CombinedGraph(
             FriendsScreen(navController = navController)
         }
         composable("media_list") {
-            MainScreen(navController = navController, multimediaViewModel)
+            MainScreen(navController = navController, multimediaViewModel, context)
         }
 
         composable("game_detail/{gameId}") { backStackEntry ->

@@ -29,4 +29,10 @@ interface MultimediaService {
         @Header("X-API-KEY") key : String,
         @Query("type") type : String = "STILL",
     ) : Call<RemoteDatasourceMultimediaImpl.ImageHandler>
+
+    @GET("api/v2.1/films/search-by-keyword")
+    fun findMediaByKeyword(
+        @Query("keyword") keyword : String,
+        @Header("X-API-KEY") key : String
+    ) : Call<RemoteDatasourceMultimediaImpl.Handler>
 }

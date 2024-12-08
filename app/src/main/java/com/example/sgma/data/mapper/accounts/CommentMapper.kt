@@ -10,6 +10,7 @@ class CommentMapper {
             text = model.text,
             date = model.date,
             avatar = model.avatar,
+            sgmaRating = model.sgmaRating
         )
     }
 
@@ -19,6 +20,7 @@ class CommentMapper {
             text = model.text,
             date = model.date,
             avatar = model.avatar,
+            sgmaRating = model.sgmaRating
         )
     }
 }

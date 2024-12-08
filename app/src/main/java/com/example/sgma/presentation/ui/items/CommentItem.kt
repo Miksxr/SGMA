@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sgma.R
 import com.example.sgma.domain.comment.Comment
 
 @Composable
@@ -53,6 +54,22 @@ fun CommentCard(comment: Comment) {
                 text = comment.username,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = "${comment.sgmaRating}",
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            Image(
+                painter = painterResource(id = R.drawable.sigma),
+                contentDescription = "Рейтинг",
+                modifier = Modifier.size(22.dp)
             )
         }
 

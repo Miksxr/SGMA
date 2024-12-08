@@ -508,9 +508,9 @@ fun GameDetailScreen(
             )
 
             val comments = listOf(
-                Comment("DevNight", "Мне не понравился геймплей, но графика супер!", "01.01.2024", R.drawable.gorin),
-                Comment("ZZZ - Я СПЛЮ", "Замечательная игра! Очень понравилось!", "05.01.2024", R.drawable.gorin),
-                Comment("DevDay", "DevNight гад*н", "10.01.2024", R.drawable.gorin)
+                Comment("DevNight", "Мне не понравился геймплей, но графика супер!", "01.01.2024", 5.2, R.drawable.gorin),
+                Comment("ZZZ - Я СПЛЮ", "Замечательная игра! Очень понравилось!", "05.01.2024", 5.7, R.drawable.gorin),
+                Comment("DevDay", "DevNight гад*н", "10.01.2024", 6.7, R.drawable.gorin)
             )
 
             Column(

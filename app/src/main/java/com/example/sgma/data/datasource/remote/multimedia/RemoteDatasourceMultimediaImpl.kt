@@ -37,14 +37,18 @@ class RemoteDatasourceMultimediaImpl : RemoteDatasourceMultimedia {
     }
 
     override suspend fun getPopularMultimediaList(page : Int): List<MediaDtoModel> {
-        return apiService.getPopularMultimediaList(1, apiClient.secretKey).await().items
+        return apiService.getPopularMultimediaList(page, apiClient.secretKey).await().items
+    }
+
+    override suspend fun findMedia(keyword: String): List<MediaDtoModel> {
+        return apiService.findMediaByKeyword(keyword, apiClient.secretKey).await().items
     }
 
     @Serializable
     data class Handler (
         @SerializedName("total") val total: Int,
         @SerializedName("totalPages") val totalPages: Int,
-        @SerializedName("items") val items : List<MediaDtoModel>
+        @SerializedName(value = "items", alternate = ["films"]) val items : List<MediaDtoModel>
     ) {
         constructor() : this(-1, -1, emptyList())
     }
