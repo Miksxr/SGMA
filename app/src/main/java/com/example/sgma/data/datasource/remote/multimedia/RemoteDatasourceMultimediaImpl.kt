@@ -24,7 +24,7 @@ class RemoteDatasourceMultimediaImpl : RemoteDatasourceMultimedia {
     init {
         apiClient = ApiClient(
             url = "https://kinopoiskapiunofficial.tech/",
-            secretKey = "SECRET_KEY"
+            secretKey = "a3ce82a8-34f3-4f21-bbe3-26ead1c0eeaf"
         )
         apiService = apiClient.retrofit.create(MultimediaService::class.java)
     }
