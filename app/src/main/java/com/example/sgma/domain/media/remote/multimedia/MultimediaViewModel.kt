@@ -28,8 +28,10 @@ class MultimediaViewModel(
     private val _mediaList : MutableLiveData<List<Media>> = MutableLiveData()
     val mediaList : LiveData<List<Media>> = _mediaList
 
-    private var cahedMedia : List<Media> = emptyList()
+    private var cahedMedia : MutableList<Media> = mutableListOf()
     val query = MutableStateFlow("")
+
+    private var page : Int = 1
 
     init {
         getMediaList()
@@ -48,11 +50,10 @@ class MultimediaViewModel(
         }
     }
 
-    fun getMediaList(page : Int = 1) {
+    fun getMediaList() {
         viewModelScope.launch {
-            val value = getPopularMultimediaList(page)
-            _mediaList.value = value
-            cahedMedia = value
+            getPopularMultimediaList(page).forEach { cahedMedia.add(it) }
+            _mediaList.value = cahedMedia
         }
     }
 
