@@ -1,5 +1,6 @@
 package com.example.sgma.presentation.ui.items
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,7 +35,7 @@ import com.example.sgma.domain.media.Media
 import com.example.sgma.presentation.ui.screens.getLocalizedString
 
 @Composable
-fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
+fun MediaCard(media: Media, context : Context, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(8.dp)
@@ -54,8 +55,8 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                 .height(130.dp)
         ) {
             Image(
-                painter = rememberAsyncImagePainter(mediaDBModel.image),
-                contentDescription = mediaDBModel.name,
+                painter = rememberAsyncImagePainter(media.image),
+                contentDescription = media.name,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -69,7 +70,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = mediaDBModel.statusType.getLocalizedString(),
+                    text = media.statusType.getLocalizedString(context),
                     color = Color.White,
                     fontSize = 7.sp,
                     fontWeight = FontWeight.Bold
@@ -83,7 +84,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = mediaDBModel.name,
+                text = media.name,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -92,7 +93,7 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${mediaDBModel.sgmaRating}",
+                    text = "${media.sgmaRating}",
                     fontSize = 18.sp
                 )
 
@@ -107,13 +108,13 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = "${mediaDBModel.anotherRating}",
+                    text = "${media.anotherRating}",
                     fontSize = 18.sp
                 )
 
                 Spacer(modifier = Modifier.width(4.dp))
 
-                val ratingIcon = if (mediaDBModel.type == ContentTypes.Game) {
+                val ratingIcon = if (media.type == ContentTypes.Game) {
                     R.drawable.metacritic
                 } else {
                     R.drawable.kinopoisk
@@ -127,36 +128,36 @@ fun MediaCard(mediaDBModel: Media, onClick: () -> Unit) {
             }
 
             Text(
-                text = "${mediaDBModel.type} • ${mediaDBModel.year}",
+                text = media.type.getLocalizedString(context) + " • ${media.year}",
                 fontSize = 16.sp,
             )
 
-            when (mediaDBModel.type) {
-                ContentTypes.Anime, ContentTypes.Serial -> {
-                    Text(
-                        text = "Сезонов: 3, Серий: 15",
-                        fontSize = 14.sp,
-                    )
-                }
-                ContentTypes.FILM -> {
-                    Text(
-                        text = "Длительность: 78 мин",
-                        fontSize = 14.sp,
-                    )
-                }
-                ContentTypes.Game -> {
-                    Text(
-                        text = "Среднее время: 25 часов",
-                        fontSize = 14.sp,
-                    )
-                }
-
-                ContentTypes.Unknown -> {}
-                ContentTypes.VIDEO -> {}
-                ContentTypes.TV_SERIES -> {}
-                ContentTypes.MINI_SERIES -> {}
-                ContentTypes.TV_SHOW -> {}
-            }
+//            when (media.type) {
+//                ContentTypes.Anime, ContentTypes.Serial -> {
+//                    Text(
+//                        text = "Сезонов: 3, Серий: 15",
+//                        fontSize = 14.sp,
+//                    )
+//                }
+//                ContentTypes.FILM -> {
+//                    Text(
+//                        text =,
+//                        fontSize = 14.sp,
+//                    )
+//                }
+//                ContentTypes.Game -> {
+//                    Text(
+//                        text = "Среднее время: 25 часов",
+//                        fontSize = 14.sp,
+//                    )
+//                }
+//
+//                ContentTypes.Unknown -> {}
+//                ContentTypes.VIDEO -> {}
+//                ContentTypes.TV_SERIES -> {}
+//                ContentTypes.MINI_SERIES -> {}
+//                ContentTypes.TV_SHOW -> {}
+//            }
         }
     }
 }

@@ -178,7 +178,7 @@ fun MultimediaDetailScreen(
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
-                    text = statusType.value?.getLocalizedString() ?: "",
+                    text = statusType.value?.getLocalizedString(context) ?: "",
                     fontSize = 18.sp,
                 )
             }
@@ -194,21 +194,21 @@ fun MultimediaDetailScreen(
                     },
                     text = {
                         val categories = listOf(
-                            Pair("Посмотрел", StatusType.Watched),
-                            Pair("Смотрю", StatusType.Watching),
-                            Pair("Пересматриваю", StatusType.Rewatching),
-                            Pair("В планах", StatusType.InPlans),
-                            Pair("Не смотрел", StatusType.None),
+                            StatusType.Watched,
+                            StatusType.Watching,
+                            StatusType.Rewatching,
+                            StatusType.InPlans,
+                            StatusType.None,
                         )
                         Column {
-                            categories.forEach { (label, status) ->
+                            categories.forEach { status ->
                                 val isSelected = statusType.value == status
                                 TextButton(onClick = {
                                     statusType.value = status
                                     showDialog = false
                                 }) {
                                     Text(
-                                        label,
+                                        status.getLocalizedString(context),
                                         fontSize = 18.sp,
                                         color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
                                     )

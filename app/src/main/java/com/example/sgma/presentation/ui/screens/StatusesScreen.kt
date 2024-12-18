@@ -1,5 +1,6 @@
 package com.example.sgma.presentation.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,7 +28,7 @@ import com.example.sgma.presentation.ui.items.MediaCard
 import com.example.sgma.presentation.ui.fakelist.getFakeMediaList
 
 @Composable
-fun StatusesScreen(navController: NavController) {
+fun StatusesScreen(navController: NavController, context: Context) {
     val statuses = listOf("Смотрю/Играю", "Посмотрел/Прошёл", "Смотрел/Играл", "Пересматриваю/Переигрываю", "Посмотрел прохождение", "В планах")
     var selectedStatus by remember { mutableStateOf(statuses.first()) }
 
@@ -85,7 +86,7 @@ fun StatusesScreen(navController: NavController) {
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             items(mediaList) { media ->
-                MediaCard(mediaDBModel = media, onClick = {
+                MediaCard(media = media, context = context, onClick = {
                     when (media.type) {
                         ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
                         else -> navController.navigate("multimedia_detail/${media.id}")

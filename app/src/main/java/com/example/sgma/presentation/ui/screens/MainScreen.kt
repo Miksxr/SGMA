@@ -25,9 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -137,7 +135,7 @@ fun MainScreen(
             ) {
                 items(filteredList!!) { media ->
                     if (media.name != "") {
-                        MediaCard(mediaDBModel = media, onClick = {
+                        MediaCard(media = media, context = context, onClick = {
                             when (media.type) {
                                 ContentTypes.Game -> navController.navigate("game_detail/${media.id}")
                                 else -> navController.navigate("multimedia_detail/${media.id}")

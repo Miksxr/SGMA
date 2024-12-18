@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SGMA</string>
+
+    <string name="status_completed">Завершил</string>
+    <string name="status_played">Играл</string>
+    <string name="status_none">Ничего</string>
+    <string name="status_playing">Играю</string>
+    <string name="status_replaying">Переигрываю</string>
+    <string name="status_watched_walkthrough">Смотрел прохождение</string>
+    <string name="status_havent_played">Не играл</string>
+    <string name="status_watching">Смотрю</string>
+    <string name="status_watched">Посмотрел</string>
+    <string name="status_rewatching">Пересматриваю</string>
+    <string name="status_havent_watched">Не смотрел</string>
+    <string name="status_in_plans">В планах</string>
+
+    <string name="type_film">Фильм</string>
+    <string name="type_game">Игра</string>
+    <string name="type_anime">Аниме</string>
+    <string name="type_unknown">Неизвестно</string>
+    <string name="type_video">Видео</string>
+    <string name="type_tv_series">Сериал</string>
+    <string name="type_mini_series">Мини-сериал</string>
+    <string name="type_tv_show">Телешоу</string>
+</resources>

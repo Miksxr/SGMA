@@ -12,7 +12,7 @@ data class MediaDtoModel (
     @SerializedName(value = "kinopoiskId", alternate = ["filmId"]) val id: Int,
     @SerializedName(value = "nameRu", alternate = []) val name: String,
     @SerializedName(value = "posterUrl", alternate = []) val image: String,
-    @SerializedName(value = "year", alternate = []) val year: String,
+    @SerializedName(value = "year", alternate = []) val year: String?,
     val sgmaRating: Double = 0.0,
     @SerializedName(value = "ratingKinopoisk") val anotherRating: Double = 0.0,
     @SerializedName(value = "type", alternate = []) val type: String,

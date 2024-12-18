@@ -63,7 +63,7 @@ fun CombinedGraph(
             RatingsScreen(navController = navController)
         }
         composable("statuses") {
-            StatusesScreen(navController = navController)
+            StatusesScreen(navController = navController, context = context)
         }
         composable("settings") {
             SettingsScreen(navController = navController)
