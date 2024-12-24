@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.sgma.R
 import com.example.sgma.domain.ConnectivityReceiver
 import com.example.sgma.domain.comment.viewmodel.CommentViewModel
 import com.example.sgma.domain.media.local.viemodel.LocalMediaViewModel
@@ -21,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -52,8 +54,7 @@ class MainActivity : ComponentActivity() {
                             this@MainActivity,
                             "Подключись к интернету!!!",
                             Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        ).show()
                     }
                     Box(modifier = Modifier.padding(paddingValues)) {
                         CombinedGraph(
@@ -62,7 +63,7 @@ class MainActivity : ComponentActivity() {
                             profileViewModel = profileViewModel,
                             multimediaViewModel = multimediaViewModel,
                             commentViewModel = commentViewModel,
-                            context = this@MainActivity
+                            context = this@MainActivity,
                         )
                     }
                 })

@@ -38,7 +38,7 @@ fun CombinedGraph(
     profileViewModel: ProfileViewModel,
     multimediaViewModel: MultimediaViewModel,
     commentViewModel: CommentViewModel,
-    context: Context
+    context: Context,
 ) {
     val mediaList = getFakeMediaList()
 
